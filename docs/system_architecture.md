@@ -18,4 +18,6 @@ Models
     board.py: contains backend for the board data and contains cell data
     ->
     cell.py: contains cell class which contains cell properties of uncovered, covered, flags
-    
+
+Input
+    mouse input for the board clicks.
