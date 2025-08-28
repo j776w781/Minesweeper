@@ -1,0 +1,1 @@
+#brings up the home screen, and creates initial board
