@@ -22,7 +22,7 @@ SCREEN = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT)) #display screen
 pygame.display.set_caption("Minesweeper Game") #Set the window title
 
 #functions for the game
-def MakeGrid():
+def make_grid():
     pygame.draw.rect(SCREEN, BLACK, (BOX_X, BOX_Y, BOX_WIDTH, BOX_HIGHT), 2)
     for row in range(NUM_ROWS):
         for col in range(NUM_COLS):
@@ -36,7 +36,7 @@ def MakeGrid():
 #run the game
 while running:
     SCREEN.fill(WHITE)
-    MakeGrid()
+    make_grid()
     # Event handling
     for event in pygame.event.get():
         if event.type == pygame.QUIT:  # Check if the user clicked the close button
