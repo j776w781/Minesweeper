@@ -1,17 +1,16 @@
 import pygame as pg
 from .settings import WIDTH, HEIGHT, FPS
-from ..model.game_manager import GameManager
-from ..ui.renderer import Renderer
-from ..input.mouse import InputController
+from ..ui.screens.start_screen import StartScreen
+#from ..input.mouse import InputController
 
 class GameApp:
     def __init__(self):
         pg.init()
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
         self.clock = pg.time.Clock()
-        self.manager = GameManager(grid_size=10, mines=10)  # validate 10–20 elsewhere
-        self.renderer = Renderer(self.screen, self.manager)
-        self.input = InputController(self.manager)
+        #self.input = InputController(self.manager)
+        #MJ, add the Input Controller to get the button to work
+        self.state = 'start'
 
     def run(self):
         running = True
@@ -20,9 +19,14 @@ class GameApp:
                 if e.type == pg.QUIT:
                     running = False
                 else:
-                    self.input.handle(e)  # convert to Uncover/ToggleFlag commands
+                   #self.input.handle(e)  # convert to Uncover/ToggleFlag commands
+                   #MJ, add the Input Controller to get the button to work
+                    pass
+            if self.state == 'start':
+                start_screen = StartScreen(self.screen)
+                start_screen.draw()
 
-            self.renderer.draw()  # reads manager state only
+
             pg.display.flip()
             self.clock.tick(FPS)
         pg.quit()
