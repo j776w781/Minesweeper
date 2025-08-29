@@ -1,0 +1,1 @@
+#has number of mines and play button

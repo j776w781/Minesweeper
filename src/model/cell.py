@@ -1,0 +1,1 @@
+#cell will be a class and it will have types of covered, flagged, and uncovered

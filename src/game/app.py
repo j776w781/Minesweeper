@@ -2,7 +2,7 @@ import pygame as pg
 from .settings import WIDTH, HEIGHT, FPS
 from ..model.game_manager import GameManager
 from ..ui.renderer import Renderer
-from ..input.controller import InputController
+from ..input.mouse import InputController
 
 class GameApp:
     def __init__(self):
