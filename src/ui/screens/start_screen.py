@@ -8,6 +8,7 @@ class StartScreen:
         self.font = pg.font.Font(None, 74)
         self.small_font = pg.font.Font(None, 36)
         self.num_mines = 10  # Default number of mines
+        self.interactibles = list()
 
         self.play_button = Button(
             x=screen.get_width() // 2 - 100,
@@ -17,22 +18,68 @@ class StartScreen:
             text="Play",
             action=self.start_game
         )
+        self.interactibles.append(self.play_button)
+
+        #Increase mines button
+        self.increment_button = Button(
+            x=screen.get_width() // 2 + 130,
+            y=screen.get_height() // 2 - 120,
+            width=30,
+            height=30,
+            text="+1",
+            action=self.more_mines
+        )
+        self.interactibles.append(self.increment_button)
+
+        #Decrease mines button
+        self.decrement_button = Button(
+            x=screen.get_width() // 2 + 130,
+            y=screen.get_height() // 2 - 80,
+            width=30,
+            height=30,
+            text="-1",
+            action=self.less_mines
+        )
+        self.interactibles.append(self.decrement_button)
 
     def start_game(self):
+        print("start game pressed")
         pass
+
+    #Increase the amount of mines 
+    def more_mines(self):
+        if self.num_mines != 20: #If the number of mines is not 20
+            #print("adding a mine")
+            self.num_mines += 1 #Add 1
+
+    #Decrease the amount of mines
+    def less_mines(self):
+        if self.num_mines != 10: #If the number of mines is not 10
+            self.num_mines -= 1 #Subtract 1
 
     def draw(self):
         self.screen.fill((0, 0, 0))  # Clear screen with black
 
+        #Title
         title_surface = self.font.render("Minesweeper", True, (255, 255, 255))
         title_rect = title_surface.get_rect(center=(self.screen.get_width() // 2, 100))
         self.screen.blit(title_surface, title_rect)
 
+        #Number of mines
         mines_surface = self.small_font.render(f"Number of Mines: {self.num_mines}", True, (255, 255, 255))
         mines_rect = mines_surface.get_rect(center=(self.screen.get_width() // 2, 200))
         self.screen.blit(mines_surface, mines_rect)
 
+        #Draw increment button
+        self.increment_button.draw(self.screen)
+
+        #Draw decrement button
+        self.decrement_button.draw(self.screen)
+
+        #Draw play button
         self.play_button.draw(self.screen)
 
+    #When an event is called
     def handle_event(self, event):
-        self.play_button.handle_event(event)
+        for button in self.interactibles: #Check to see which interactible it hit
+            button.handle_event(event)

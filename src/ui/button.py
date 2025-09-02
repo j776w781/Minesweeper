@@ -17,7 +17,7 @@ class Button:
 
     def handle_event(self, event):
         if event.type == pygame.MOUSEBUTTONDOWN:
-            if self.rect.collidepoint(event.pos):
+            if self.rect.collidepoint(event.pos) and event.button == 1: #If the mouse position is over the button AND the left mouse button was pressed
                 self.action()
 
 
