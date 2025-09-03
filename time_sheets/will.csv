@@ -1,1 +1,2 @@
 Implement StartScreen and Button classes; refactor GameApp to integrate StartScreen, .5
+Manage Game State Transitions, .5
