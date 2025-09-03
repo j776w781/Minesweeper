@@ -17,12 +17,16 @@ class PlayScreen:
         self.num_mines = num_mines
         self.font = pg.font.Font(None, 74)
         self.small_font = pg.font.Font(None, 36)
-        self.grid = make_grid()
+        self.grid = []
         self.play_state = "initial"
 
     def draw(self):
-        self.screen.fill(WHITE)
-        make_grid()
+        if self.play_state == "initial":
+            self.screen.fill(WHITE)
+            self.grid = make_grid()
+        elif self.play_state == "playing":
+            for cell in self.grid:
+                cell.draw(self.screen, cell.rect.x, cell.rect.y)
 
         mines_surface = self.small_font.render(f"Mines: {self.num_mines}", True, BLACK)
         self.screen.blit(mines_surface, (525, 100))
@@ -31,5 +35,8 @@ class PlayScreen:
 
 
     def handle_event(self, event):
-        #for when cells are clicked
-        pass
+        if event.type == pg.MOUSEBUTTONDOWN:
+            if self.play_state == "initial":
+                self.play_state = "playing"
+        for cell in self.grid:
+            cell.handle_event(event)
