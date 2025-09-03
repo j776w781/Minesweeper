@@ -13,8 +13,11 @@ import pygame as pg
 from ..button import Button
 
 class StartScreen:
-    def __init__(self, screen):
+    def __init__(self, screen, app=None): 
+        #Initialize the start screen
+        #It has app paramater so that it an communicate back to the main GameApp to trigger state changes.
         self.screen = screen
+        self.app = app
         self.font = pg.font.Font(None, 74)
         self.small_font = pg.font.Font(None, 36)
         self.num_mines = 10  # Default number of mines
@@ -52,9 +55,12 @@ class StartScreen:
         )
         self.interactibles.append(self.decrement_button)
 
+    #Start the game when play button is pressed
+    #Calls back to the main GameApp to transition to play state
+    #defined only if app is provided
     def start_game(self):
-        print("start game pressed")
-        pass
+        if hasattr(self, 'app') and self.app: #Check to make sure app exists as a good practice
+            self.app.transition_to_play(self.num_mines) #Call the transition_to_play method in GameApp with the selected number of mines
 
     #Increase the amount of mines 
     def more_mines(self):
