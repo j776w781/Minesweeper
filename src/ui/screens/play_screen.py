@@ -10,6 +10,7 @@ Creation date: 28 August 2025
 import pygame as pg
 from ...game.settings import WHITE, BLACK
 from ...model.board import make_grid
+import random as rd
 
 class PlayScreen:
     def __init__(self, screen, num_mines):
@@ -33,10 +34,18 @@ class PlayScreen:
 
         pg.display.update()
 
+    def set_mines(self):
+        for i in range(self.num_mines):
+            target_cell = rd.choice(self.grid)
+            while target_cell.is_mine:
+                target_cell = rd.choice(self.grid)
+            target_cell.set_mine()
+            #increment adjacent mine counts
 
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
             if self.play_state == "initial":
                 self.play_state = "playing"
+                self.set_mines()
         for cell in self.grid:
             cell.handle_event(event)
