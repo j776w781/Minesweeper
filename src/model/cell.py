@@ -36,12 +36,13 @@ class Cell:
     def draw(self, surface, x, y, size=40):
         rect = pg.Rect(x, y, size, size)
         if self.is_covered: #covered cell drawing
-            pg.draw.rect(surface, (100, 100, 100), rect, width=1)
+            pg.draw.rect(surface, (100, 100, 100), rect, width=0)
+            pg.draw.rect(surface, (0, 0, 0), rect, width=1)
             self.rect = rect
             if self.is_flagged:
                 pg.draw.circle(surface, (255, 0, 0), rect.center, 10)
         else: #uncovered cell drawing
-            pg.draw.rect(surface, (0, 0, 255), rect, width=0, border_radius=2)
+            pg.draw.rect(surface, (0, 0, 255), rect, width=0)
             self.rect = rect
             if self.is_mine:
                 pg.draw.circle(surface, (0, 0, 0), rect.center, 10)
@@ -53,9 +54,8 @@ class Cell:
     
     def handle_event(self, event):
         rect = self.rect
-        if event.type == pg.MOUSEBUTTONDOWN:
-            if rect.collidepoint(event.pos):
-                if event.button == 1:
-                    self.uncover()
-                elif event.button == 3:
-                    self.toggle_flag()
+        if event.type == pg.MOUSEBUTTONDOWN and rect.collidepoint(event.pos):
+            if event.button == 1:
+                self.uncover()
+            elif event.button == 3:
+                self.toggle_flag()
