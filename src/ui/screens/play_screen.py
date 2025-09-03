@@ -18,6 +18,7 @@ class PlayScreen:
         self.font = pg.font.Font(None, 74)
         self.small_font = pg.font.Font(None, 36)
         self.grid = make_grid()
+        self.play_state = "initial"
 
     def draw(self):
         self.screen.fill(WHITE)
