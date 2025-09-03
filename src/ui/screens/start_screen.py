@@ -1,3 +1,13 @@
+"""
+Program name:
+Description:
+Inputs:
+Outputs:
+External sources:
+Authors:
+Creation date: 28 August 2025
+"""
+
 #has number of mines and play button
 import pygame as pg
 from ..button import Button

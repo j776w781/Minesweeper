@@ -1,3 +1,13 @@
+"""
+Program name:
+Description:
+Inputs:
+Outputs:
+External sources:
+Authors:
+Creation date: 28 August 2025
+"""
+
 GRID = 10
 TILE_PX = 48
 MARGIN = 16

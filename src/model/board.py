@@ -1,3 +1,13 @@
+"""
+Program name:
+Description:
+Inputs:
+Outputs:
+External sources:
+Authors:
+Creation date: 28 August 2025
+"""
+
 import pygame
 from ..game.settings import WIDTH, HEIGHT, SCREEN, BLACK, BOX_X, BOX_Y, BOX_WIDTH, BOX_HIGHT, NUM_ROWS, NUM_COLS, BLOCKSIZE, GRAY
 from .cell import Cell

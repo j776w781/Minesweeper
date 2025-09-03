@@ -1,3 +1,13 @@
+"""
+Program name:
+Description:
+Inputs:
+Outputs:
+External sources:
+Authors:
+Creation date: 28 August 2025
+"""
+
 #cell will be a class and it will have types of covered, flagged, and uncovered
 import pygame as pg
 

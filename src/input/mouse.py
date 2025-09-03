@@ -1,3 +1,13 @@
+"""
+Program name:
+Description:
+Inputs:
+Outputs:
+External sources:
+Authors:
+Creation date: 28 August 2025
+"""
+
 #Class that defines and handles mouse input
 
 #Import libraries
