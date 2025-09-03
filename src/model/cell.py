@@ -36,7 +36,7 @@ class Cell:
     def draw(self, surface, x, y, size=40):
         rect = pg.Rect(x, y, size, size)
         if self.is_covered: #covered cell drawing
-            pg.draw.rect(surface, (200, 200, 200), rect, width=0, border_radius=2)
+            pg.draw.rect(surface, (100, 100, 100), rect, width=1)
             self.rect = rect
             if self.is_flagged:
                 pg.draw.circle(surface, (255, 0, 0), rect.center, 10)
