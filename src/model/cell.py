@@ -23,18 +23,18 @@ class Cell:
     def increment_adjacent_mines(self):
         self.adjacent_mines += 1
     #draw will draw the cell on the screen, depending on the cell's state
-    def draw(self, surface, x, y):
-        rect = pg.Rect(x, y, 20, 20)
+    def draw(self, surface, x, y, size=40):
+        rect = pg.Rect(x, y, size, size)
         if self.is_covered: #covered cell drawing
             pg.draw.rect(surface, (200, 200, 200), rect, width=0, border_radius=2)
             self.rect = rect
             if self.is_flagged:
-                pg.draw.circle(surface, (255, 0, 0), rect.center, 5)
+                pg.draw.circle(surface, (255, 0, 0), rect.center, 10)
         else: #uncovered cell drawing
             pg.draw.rect(surface, (0, 0, 255), rect, width=0, border_radius=2)
             self.rect = rect
             if self.is_mine:
-                pg.draw.circle(surface, (0, 0, 0), rect.center, 5)
+                pg.draw.circle(surface, (0, 0, 0), rect.center, 10)
             elif self.adjacent_mines > 0:
                 font = pg.font.Font(None, 24)
                 text_surface = font.render(str(self.adjacent_mines), True, (0, 0, 255))
