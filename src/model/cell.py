@@ -48,14 +48,16 @@ class Cell:
                 pg.draw.circle(surface, (0, 0, 0), rect.center, 10)
             elif self.adjacent_mines > 0:
                 font = pg.font.Font(None, 24)
-                text_surface = font.render(str(self.adjacent_mines), True, (0, 0, 255))
+                text_surface = font.render(str(self.adjacent_mines), True, (0, 0, 0))
                 text_rect = text_surface.get_rect(center=rect.center)
                 surface.blit(text_surface, text_rect)
-    
+
+    #handle_event will handle mouse events for the cell
     def handle_event(self, event):
         rect = self.rect
         if event.type == pg.MOUSEBUTTONDOWN and rect.collidepoint(event.pos):
             if event.button == 1:
                 self.uncover()
+                return True
             elif event.button == 3:
                 self.toggle_flag()

@@ -41,6 +41,22 @@ class PlayScreen:
                 target_cell = rd.choice(self.grid)
             target_cell.set_mine()
             #increment adjacent mine counts
+            target_index = self.grid.index(target_cell)
+            adjacent_indices = [target_index - 1, target_index + 1, target_index - 11, target_index + 11, target_index - 10, target_index + 10, target_index -9, target_index + 9]
+            for index in adjacent_indices:
+                if 0 <= index < len(self.grid):
+                    self.grid[index].increment_adjacent_mines()
+
+    def uncover_adjacent_cells(cell, grid):
+        if cell.adjacent_mines == 0 and not cell.is_mine:
+            target_index = grid.index(cell)
+            adjacent_indices = [target_index - 1, target_index + 1, target_index - 11, target_index + 11, target_index - 10, target_index + 10, target_index -9, target_index + 9]
+            for index in adjacent_indices:
+                if 0 <= index < len(grid):
+                    adjacent_cell = grid[index]
+                    if adjacent_cell.is_covered and not adjacent_cell.is_mine:
+                        adjacent_cell.uncover()
+                        PlayScreen.uncover_adjacent_cells(adjacent_cell, grid)
 
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
@@ -48,4 +64,9 @@ class PlayScreen:
                 self.play_state = "playing"
                 self.set_mines()
         for cell in self.grid:
-            cell.handle_event(event)
+            if cell.handle_event(event):
+                #if cell.is_mine:
+                #   self.play_state = "game_over"
+                #  print("Game Over")
+                #else:
+                PlayScreen.uncover_adjacent_cells(cell, self.grid)
