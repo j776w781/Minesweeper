@@ -2,9 +2,9 @@
 Program name: play_screen
 Description: displays the play screen of minesweeper
 Inputs: screen and number of mines
-Outputs: makes a 10x19 grid with labels and a mine count
+Outputs: makes a 10x10 grid with labels and a mine count
 External sources:
-Authors: Ruth Higgason
+Authors: Ruth Higgason, Benjamin Kozlowski
 Creation date: 28 August 2025
 """
 import pygame as pg
@@ -20,7 +20,7 @@ class PlayScreen:
         self.small_font = pg.font.Font(None, 36)
         self.grid = []
         self.play_state = "initial"
-
+    # Draw the play screen, updating the display
     def draw(self):
         if self.play_state == "initial":
             self.screen.fill(WHITE)
@@ -34,6 +34,7 @@ class PlayScreen:
 
         pg.display.update()
 
+    #gets adjacent indices of a cell, accounting for edge cases
     def adjacent_indices(self, cell):
         target_index = self.grid.index(cell)
         left_edge = [0, 10, 20, 30, 40, 50, 60, 70, 80, 90]
@@ -45,6 +46,7 @@ class PlayScreen:
         else:
             return [target_index - 1, target_index + 1, target_index + 10, target_index - 10, target_index + 9, target_index + 11, target_index - 9, target_index - 11]
     
+    # Randomly place mines on the grid and update adjacent mine counts  
     def set_mines(self):
         for i in range(self.num_mines):
             target_cell = rd.choice(self.grid)
@@ -57,6 +59,7 @@ class PlayScreen:
                 if 0 <= index < len(self.grid):
                     self.grid[index].increment_adjacent_mines()
 
+    # Recursively uncover adjacent cells if they have zero adjacent mines
     def uncover_adjacent_cells(self, cell, grid):
         if cell.adjacent_mines == 0 and not cell.is_mine:
             adjacent_indices = self.adjacent_indices(cell)
@@ -67,6 +70,7 @@ class PlayScreen:
                         adjacent_cell.uncover()
                         self.uncover_adjacent_cells(adjacent_cell, grid)
 
+    # Handle mouse events for uncovering and flagging cells
     def handle_event(self, event):
         if event.type == pg.MOUSEBUTTONDOWN:
             if self.play_state == "initial":
