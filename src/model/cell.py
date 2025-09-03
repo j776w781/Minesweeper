@@ -1,10 +1,10 @@
 """
-Program name:
-Description:
-Inputs:
-Outputs:
+Program name: cell.py
+Description: cell class for minesweeper game
+Inputs: surface, position, size
+Outputs: A cell object with methods to uncover, flag, set mine, increment adjacent mines, draw, and handle events
 External sources:
-Authors:
+Authors: Benjamin Kozlowksi
 Creation date: 28 August 2025
 """
 

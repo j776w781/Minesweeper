@@ -1,10 +1,10 @@
 """
-Program name:
-Description:
-Inputs:
-Outputs:
+Program name: board.py
+Description: Outputs a grid of Cell objects for the minesweeper game
+Inputs: none
+Outputs: A centered grid of Cell objects with row and column labels
 External sources:
-Authors:
+Authors: Ruth Higgason, Benjamin Kozlowski
 Creation date: 28 August 2025
 """
 
