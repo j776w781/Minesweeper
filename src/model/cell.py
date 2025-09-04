@@ -42,7 +42,7 @@ class Cell:
             if self.is_flagged:
                 pg.draw.circle(surface, (255, 0, 0), rect.center, 10)
         else: #uncovered cell drawing
-            pg.draw.rect(surface, (128, 123, 78), rect, width=0)
+            pg.draw.rect(surface, (229, 194, 159), rect, width=0)
             self.rect = rect
             if self.is_mine:
                 pg.draw.rect(surface, (255, 0, 0), rect, width=0)
