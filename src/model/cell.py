@@ -36,13 +36,13 @@ class Cell:
     def draw(self, surface, x, y, size=40):
         rect = pg.Rect(x, y, size, size)
         if self.is_covered: #covered cell drawing
-            pg.draw.rect(surface, (162, 209, 73), rect, width=0)
+            pg.draw.rect(surface, (162, 209, 73), rect, width=0) #Green Color
             pg.draw.rect(surface, (0, 0, 0), rect, width=1)
             self.rect = rect
             if self.is_flagged:
-                pg.draw.circle(surface, (255, 0, 0), rect.center, 10)
+                pg.draw.circle(surface, (255, 0, 0), rect.center, 10) #Red Color
         else: #uncovered cell drawing
-            pg.draw.rect(surface, (229, 194, 159), rect, width=0)
+            pg.draw.rect(surface, (229, 194, 159), rect, width=0) #Brown Color
             self.rect = rect
             if self.is_mine:
                 pg.draw.rect(surface, (255, 0, 0), rect, width=0)
