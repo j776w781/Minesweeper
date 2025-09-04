@@ -20,6 +20,7 @@ class PlayScreen:
         self.small_font = pg.font.Font(None, 36)
         self.grid = []
         self.play_state = "initial"
+        self.remaining_cells = 100 - num_mines  # Total cells minus mines
     # Draw the play screen, updating the display
     def draw(self):
         if self.play_state == "initial":
@@ -47,11 +48,13 @@ class PlayScreen:
             return [target_index - 1, target_index + 1, target_index + 10, target_index - 10, target_index + 9, target_index + 11, target_index - 9, target_index - 11]
     
     # Randomly place mines on the grid and update adjacent mine counts  
-    def set_mines(self):
+    def set_mines(self, safe_cell):
+        safe_grid = self.grid.copy()
+        safe_grid.remove(safe_cell)
         for i in range(self.num_mines):
-            target_cell = rd.choice(self.grid)
+            target_cell = rd.choice(safe_grid)
             while target_cell.is_mine:
-                target_cell = rd.choice(self.grid)
+                target_cell = rd.choice(safe_grid)
             target_cell.set_mine()
             #increment adjacent mine counts
             adjacent_indices = self.adjacent_indices(target_cell)
@@ -68,6 +71,7 @@ class PlayScreen:
                     adjacent_cell = grid[index]
                     if adjacent_cell.is_covered and not adjacent_cell.is_mine:
                         adjacent_cell.uncover()
+                        self.remaining_cells -= 1
                         self.uncover_adjacent_cells(adjacent_cell, grid)
 
     # Handle mouse events for uncovering and flagging cells
@@ -75,12 +79,17 @@ class PlayScreen:
         if event.type == pg.MOUSEBUTTONDOWN:
             if self.play_state == "initial":
                 self.play_state = "playing"
-                self.set_mines()
+                for cell in self.grid:
+                    if cell.rect.collidepoint(event.pos):
+                        self.set_mines(cell)
         for cell in self.grid:
             if cell.handle_event(event):
-                #if cell.is_mine:
+                if cell.is_mine:
                 #   self.play_state = "game_over"
-                #  print("Game Over")
-                #else:
-                self.uncover_adjacent_cells(cell, self.grid)
-                print(f"Cell at index {self.grid.index(cell)} uncovered with {cell.adjacent_mines} adjacent mines.")
+                    print("Game Over")
+                else:
+                    self.remaining_cells -= 1
+                    self.uncover_adjacent_cells(cell, self.grid)
+                    print(f"Cell at index {self.grid.index(cell)} uncovered with {cell.adjacent_mines} adjacent mines. {self.remaining_cells} cells remaining.")
+                if self.remaining_cells == 0:
+                    print("You Win!")
