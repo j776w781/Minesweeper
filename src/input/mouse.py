@@ -1,14 +1,12 @@
 """
-Program name:
-Description:
-Inputs:
-Outputs:
-External sources:
-Authors:
+Program name: mouse.py
+Description: Class that defines and handles mouse input
+Inputs: Mouse events
+Outputs: None
+External sources: None
+Authors: MJ McGee
 Creation date: 28 August 2025
 """
-
-#Class that defines and handles mouse input
 
 #Import libraries
 import pygame as pg
