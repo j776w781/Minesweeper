@@ -1,12 +1,13 @@
 """
-Program name:
-Description:
-Inputs:
-Outputs:
+Program name: settings.py
+Description: Settings and constants for the minesweeper game
+Inputs: None
+Outputs: Constants
 External sources:
-Authors:
+Authors: Benjamin Kozlowski
 Creation date: 28 August 2025
 """
+import pygame
 
 GRID = 10
 TILE_PX = 48
@@ -26,8 +27,6 @@ BOX_Y = (HEIGHT-BOX_HIGHT)//2
 BLOCKSIZE = 40
 NUM_COLS = BOX_WIDTH // BLOCKSIZE
 NUM_ROWS = BOX_HIGHT // BLOCKSIZE
-#WILL NEED TO REMOVE LATER
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
-import pygame
 SCREEN = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
