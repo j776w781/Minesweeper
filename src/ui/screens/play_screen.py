@@ -95,7 +95,7 @@ class PlayScreen:
                         self.set_mines(cell)
         for cell in self.grid:
             if cell.handle_event(event):
-                if cell.is_mine:
+                if cell.is_mine and not cell.is_flagged: #Need to make sure the cell isn't already flagged
                     self.loss = True
                     for cell in self.grid:
                         if cell.is_mine:
