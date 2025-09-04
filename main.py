@@ -8,8 +8,8 @@ Authors: Will
 Creation date: 28 August 2025
 """
 
-from src.game.app import GameApp
+from src.game.app import GameApp #GameApp will serve as the core manager of the program
 
-if __name__ == "__main__":
-    GameApp().run()
-#ben
+#it is a best practice to keep main simple and just as an entry point for the program
+if __name__ == "__main__": #entry point for the program
+    GameApp().run() #runs the whole program, calls app which is the manager of the program
