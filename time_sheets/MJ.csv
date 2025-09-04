@@ -1,3 +1,4 @@
 Task, Timespent
 create_start_screen, .5
 get_user_input, 1
+edit_prologue_comments, .5
