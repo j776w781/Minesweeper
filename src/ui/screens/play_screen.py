@@ -87,6 +87,9 @@ class PlayScreen:
                 if cell.is_mine:
                 #   self.play_state = "game_over"
                     print("Game Over")
+                    for cell in self.grid:
+                        if cell.is_mine:
+                            cell.uncover()
                 else:
                     self.remaining_cells -= 1
                     self.uncover_adjacent_cells(cell, self.grid)

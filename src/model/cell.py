@@ -45,6 +45,7 @@ class Cell:
             pg.draw.rect(surface, (0, 0, 255), rect, width=0)
             self.rect = rect
             if self.is_mine:
+                pg.draw.rect(surface, (255, 0, 0), rect, width=0)
                 pg.draw.circle(surface, (0, 0, 0), rect.center, 10)
             elif self.adjacent_mines > 0:
                 font = pg.font.Font(None, 24)
