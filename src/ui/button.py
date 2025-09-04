@@ -1,10 +1,10 @@
 """
-Program name:
-Description:
-Inputs:
-Outputs:
-External sources:
-Authors:
+Program name: button
+Description: displays a button that can be reused
+Inputs: position of the button, height, width, text, the action we want it to produce.
+Outputs: prints a button to the ui.
+External sources: Pygame Documentation
+Authors: Will
 Creation date: 28 August 2025
 """
 
