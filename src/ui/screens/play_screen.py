@@ -22,6 +22,7 @@ class PlayScreen:
         self.play_state = "initial"
         self.remaining_cells = 100 - num_mines  # Total cells minus mines
         self.app = app
+        self.loss = False
     # Draw the play screen, updating the display
     def draw(self):
         if self.play_state == "initial":
@@ -30,7 +31,8 @@ class PlayScreen:
         elif self.play_state == "playing":
             for cell in self.grid:
                 cell.draw(self.screen, cell.rect.x, cell.rect.y)
-
+            if self.loss:
+                self.play_state = "game_over"
         mines_surface = self.small_font.render(f"Mines: {self.num_mines}", True, BLACK)
         self.screen.blit(mines_surface, (525, 100))
 
@@ -94,7 +96,7 @@ class PlayScreen:
         for cell in self.grid:
             if cell.handle_event(event):
                 if cell.is_mine:
-                    print("Game Over")
+                    self.loss = True
                     for cell in self.grid:
                         if cell.is_mine:
                             cell.uncover()
