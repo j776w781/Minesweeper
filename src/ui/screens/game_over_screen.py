@@ -1,5 +1,5 @@
 """
-Program name: Game Over Screen
+Program name: game_over_screen
 Description: displays the game over screen of minesweeper
 Inputs: takes in the app state and the screen
 Outputs: ui for the game over screen with restart button to

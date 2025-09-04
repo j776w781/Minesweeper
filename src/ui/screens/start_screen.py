@@ -1,10 +1,10 @@
 """
-Program name:
-Description:
-Inputs:
-Outputs:
-External sources:
-Authors:
+Program name: start_screen
+Description: prints the start screen ui with a start button and takes input of number of mines 
+Inputs: takes in number of mines
+Outputs: start screen ui with mine number buttons
+External sources: PyGame Documentation
+Authors: Will
 Creation date: 28 August 2025
 """
 

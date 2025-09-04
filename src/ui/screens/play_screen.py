@@ -3,8 +3,8 @@ Program name: play_screen
 Description: displays the play screen of minesweeper
 Inputs: screen and number of mines
 Outputs: makes a 10x10 grid with labels and a mine count
-External sources:
-Authors: Ruth Higgason, Benjamin Kozlowski
+External sources: None
+Authors: Ruth, Ben, Will
 Creation date: 28 August 2025
 """
 import pygame as pg
