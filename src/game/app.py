@@ -1,10 +1,11 @@
 """
-Program name:
-Description:
-Inputs:
-Outputs:
-External sources:
-Authors:
+Program name: app.y
+Description: This is the core backend of the program that manages which screen is active
+and the transitions between each of the files
+Inputs: takes in number of mines from the user
+Outputs: prints the screens
+External sources: None
+Authors: Will, MJ
 Creation date: 28 August 2025
 """
 

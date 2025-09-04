@@ -1,8 +1,8 @@
 """
 Program name: Game Over Screen
 Description: displays the game over screen of minesweeper
-Inputs:
-Outputs:
+Inputs: takes in the app state and the screen
+Outputs: ui for the game over screen with restart button to
 External sources: None
 Authors: Will
 Creation date: 4 September 2025
