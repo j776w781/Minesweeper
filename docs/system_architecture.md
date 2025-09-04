@@ -9,9 +9,8 @@ UI Screens
     game_over_screen.py
     ->
     start_screen.py
-Game Manager:
-    Create board
-    Track board state (cells, mine placement, flag placement)
+Game App in app.py:
+    Tracks States
 
 Models
     board.py: contains backend for the board data and contains cell data
