@@ -14,7 +14,6 @@ from .cell import Cell
 
 #draw grid and add labels
 def make_grid():
-    FONT = pygame.font.SysFont('Arial', 24)
     pygame.draw.rect(SCREEN, BLACK, (BOX_X, BOX_Y, BOX_WIDTH, BOX_HIGHT), 2)
     cell_list = []
     for row in range(NUM_ROWS):
@@ -25,18 +24,19 @@ def make_grid():
             cell = Cell()
             cell.draw(SCREEN, cell_x, cell_y, BLOCKSIZE)
             cell_list.append(cell)
+    return cell_list
 
-
+def make_labels():
+    FONT = pygame.font.SysFont('Arial', 24)
     # column labels (top)
     for col in range(NUM_COLS):
         label = FONT.render(chr(col + 65), True, BLACK)
         label_rect = label.get_rect(center=(BOX_X + col*BLOCKSIZE + BLOCKSIZE//2, BOX_Y - 10))
         SCREEN.blit(label, label_rect)
     # row labels (left)
-    
     for row in range(NUM_ROWS):
         label = FONT.render(str(row + 1), True, BLACK)
         label_rect = label.get_rect(center=(BOX_X - 15, BOX_Y + row*BLOCKSIZE + BLOCKSIZE//2))
         SCREEN.blit(label, label_rect)
 
-    return cell_list
+    

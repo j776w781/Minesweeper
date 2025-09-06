@@ -9,13 +9,14 @@ Creation date: 28 August 2025
 """
 import pygame as pg
 from ...game.settings import WHITE, BLACK
-from ...model.board import make_grid
+from ...model.board import make_grid, make_labels
 import random as rd
 
 class PlayScreen:
     def __init__(self, screen, num_mines, app):
         self.screen = screen
         self.num_mines = num_mines
+        self.flags_left = num_mines
         self.font = pg.font.Font(None, 74)
         self.small_font = pg.font.Font(None, 36)
         self.grid = []
@@ -28,13 +29,16 @@ class PlayScreen:
         if self.play_state == "initial":
             self.screen.fill(WHITE)
             self.grid = make_grid()
+            make_labels()
         elif self.play_state == "playing":
+            self.screen.fill(WHITE)
+            make_labels()
             for cell in self.grid:
                 cell.draw(self.screen, cell.rect.x, cell.rect.y)
             if self.loss:
                 self.play_state = "game_over"
-        mines_surface = self.small_font.render(f"Mines: {self.num_mines}", True, BLACK)
-        self.screen.blit(mines_surface, (525, 100))
+        mines_surface = self.small_font.render(f"Mines Left: {self.flags_left}", True, BLACK)
+        self.screen.blit(mines_surface, (57, 490))
 
         pg.display.update()
 
@@ -101,14 +105,28 @@ class PlayScreen:
                         if cell.is_mine:
                             cell.uncover()
                     pg.time.set_timer(self.GAME_OVER_EVENT, 1000, loops=1)  # Set a timer to trigger GAME_OVER_EVENT after 1 second,
-                    #the reason for the delay is to allow the player to see the mines before transitioning to game over screen
-                    
+                    #the reason for the delay is to allow the player to see the mines before transitioning to game over screen  
                 else:
                     self.remaining_cells -= 1
                     self.uncover_adjacent_cells(cell, self.grid)
                     print(f"Cell at index {self.grid.index(cell)} uncovered with {cell.adjacent_mines} adjacent mines. {self.remaining_cells} cells remaining.")
                 if self.remaining_cells == 0:
                     print("You Win!")
+        if event.type == pg.MOUSEBUTTONDOWN and event.button == 3:
+            for cell in self.grid:
+                if cell.rect.collidepoint(event.pos):
+                    if cell.is_flagged:
+                        if self.flags_left > 0:
+                            #place a flag and update counter
+                            self.flags_left -= 1
+                        else:
+                            #no more flags left
+                            print("No flags left")
+                            cell.toggle_flag()
+                    else:
+                        #remove flag and add one back to the counter
+                        cell.toggle_flag()
+                        self.flags_left += 1
                     
         if event.type == self.GAME_OVER_EVENT:
             self.end_game()
