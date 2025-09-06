@@ -125,7 +125,6 @@ class PlayScreen:
                             cell.toggle_flag()
                     else:
                         #remove flag and add one back to the counter
-                        cell.toggle_flag()
                         self.flags_left += 1
                     
         if event.type == self.GAME_OVER_EVENT:
