@@ -4,7 +4,7 @@ Description: cell class for minesweeper game
 Inputs: surface, position, size
 Outputs: A cell object with methods to uncover, flag, set mine, increment adjacent mines, draw, and handle events
 External sources:
-Authors: Benjamin Kozlowksi
+Authors: Benjamin Kozlowksi, MJ McGee
 Creation date: 28 August 2025
 """
 
@@ -57,7 +57,7 @@ class Cell:
     def handle_event(self, event):
         rect = self.rect
         if event.type == pg.MOUSEBUTTONDOWN and rect.collidepoint(event.pos):
-            if event.button == 1:
+            if event.button == 1 and self.is_covered and not self.is_flagged: #If cell is left clicked AND cell is covered AND cell is not flagged
                 self.uncover()
                 return True
             elif event.button == 3:
