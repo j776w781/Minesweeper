@@ -4,7 +4,7 @@ Description: displays the play screen of minesweeper
 Inputs: screen and number of mines
 Outputs: makes a 10x10 grid with labels and a mine count
 External sources: None
-Authors: Ruth, Ben, Will
+Authors: Ruth, Ben, Will, MJ
 Creation date: 28 August 2025
 """
 import pygame as pg
@@ -24,21 +24,36 @@ class PlayScreen:
         self.remaining_cells = 100 - num_mines  # Total cells minus mines
         self.app = app
         self.loss = False
+        self.board_cleared = False
     # Draw the play screen, updating the display
     def draw(self):
         if self.play_state == "initial":
             self.screen.fill(WHITE)
             self.grid = make_grid()
             make_labels()
+            gamestate_surface = self.small_font.render(f"Ready", True, BLACK) #Label to indicate game is ready to play
         elif self.play_state == "playing":
+            gamestate_surface = self.small_font.render(f"Playing", True, BLACK) #Label to indicate the game is playing
             self.screen.fill(WHITE)
             make_labels()
             for cell in self.grid:
                 cell.draw(self.screen, cell.rect.x, cell.rect.y)
+        elif self.play_state == "game_over":
             if self.loss:
-                self.play_state = "game_over"
+                gamestate_surface = self.small_font.render("You lose!", True, BLACK) #Label to indicate loss
+                self.screen.fill(WHITE)
+                make_labels()
+                for cell in self.grid:
+                    cell.draw(self.screen, cell.rect.x, cell.rect.y)
+            else:
+                gamestate_surface = self.small_font.render("You win!", True, BLACK) #Label to indicate victory
+                self.screen.fill(WHITE)
+                make_labels()
+                for cell in self.grid:
+                    cell.draw(self.screen, cell.rect.x, cell.rect.y)
         mines_surface = self.small_font.render(f"Mines Left: {self.flags_left}", True, BLACK)
         self.screen.blit(mines_surface, (57, 490))
+        self.screen.blit(gamestate_surface, (30, 30)) #Draw game_state label
 
         pg.display.update()
 
@@ -104,6 +119,7 @@ class PlayScreen:
                     for cell in self.grid:
                         if cell.is_mine:
                             cell.uncover()
+                    self.play_state = "game_over"
                     pg.time.set_timer(self.GAME_OVER_EVENT, 1000, loops=1)  # Set a timer to trigger GAME_OVER_EVENT after 1 second,
                     #the reason for the delay is to allow the player to see the mines before transitioning to game over screen  
                 else:
@@ -111,7 +127,11 @@ class PlayScreen:
                     self.uncover_adjacent_cells(cell, self.grid)
                     print(f"Cell at index {self.grid.index(cell)} uncovered with {cell.adjacent_mines} adjacent mines. {self.remaining_cells} cells remaining.")
                 if self.remaining_cells == 0:
-                    print("You Win!")
+                    if self. flags_left == 0: #If the number of flags left is 0
+                        self.play_state = "game_over" #Set the play_state to game_over
+                        pg.time.set_timer(self.GAME_OVER_EVENT, 1000, loops=1) #Set a timer to trigger GAME_OVER_EVENT after 1 sec
+                    self.board_cleared = True #If the # of uncleared, non-mine cells is 0, set this flag to true
+                    
         if event.type == pg.MOUSEBUTTONDOWN and event.button == 3:
             for cell in self.grid:
                 if cell.rect.collidepoint(event.pos):
@@ -119,6 +139,9 @@ class PlayScreen:
                         if self.flags_left > 0:
                             #place a flag and update counter
                             self.flags_left -= 1
+                            if self.flags_left == 0 and self.board_cleared: #If the number of flags left is 0 AND the board is cleared
+                                self.play_state = "game_over"
+                                pg.time.set_timer(self.GAME_OVER_EVENT, 1000, loops=1)  # Set a timer to trigger GAME_OVER_EVENT after 1 second
                         else:
                             #no more flags left
                             print("No flags left")

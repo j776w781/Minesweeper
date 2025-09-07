@@ -62,7 +62,7 @@ class GameApp:
                 self.input.update_screen(self.play_screen) #Make sure the input controller knows which screen is active
 
             elif self.state == 'game_over' and self.game_over_screen: #Manage Game Over state
-                self.game_over_screen.draw() #Draw the play screen
+                self.game_over_screen.draw() #Draw the game over screen
                 self.input.update_screen(self.game_over_screen) #Make sure the input controller knows which screen is active
             #END STATE MANAGEMENT
 
