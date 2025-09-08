@@ -87,6 +87,8 @@ class PlayScreen:
     # Recursively uncover adjacent cells if they have zero adjacent mines
     def uncover_adjacent_cells(self, cell, grid):
         if cell.adjacent_mines == 0 and not cell.is_mine:
+            if cell.is_flagged == True:
+                return
             adjacent_indices = self.adjacent_indices(cell)
             for index in adjacent_indices:
                 if 0 <= index < len(grid):
