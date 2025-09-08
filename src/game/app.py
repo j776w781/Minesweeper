@@ -14,6 +14,7 @@ from .settings import WIDTH, HEIGHT, FPS
 from ..ui.screens.start_screen import StartScreen
 from ..ui.screens.play_screen import PlayScreen
 from ..ui.screens.game_over_screen import GameOverScreen
+from ..ui.screens.victory_screen import VictoryScreen
 from ..input.mouse import InputController
      
 class GameApp:
@@ -35,6 +36,11 @@ class GameApp:
         self.play_screen = None #Clear the play screen
         self.game_over_screen = GameOverScreen(self.screen, self) #Initialize the game over screen
         self.state = 'game_over'
+
+    def transition_to_victory(self): #Called by PlayScreen when the game is won
+        self.play_screen = None #Clear the play screen
+        self.victory_screen = VictoryScreen(self.screen, self) #Initialize the victory screen
+        self.state = 'victory'
 
     def transition_to_start(self): #Called by GameOverScreen when restart button is pressed
         self.game_over_screen_screen = None #Clear the play screen
@@ -64,6 +70,10 @@ class GameApp:
             elif self.state == 'game_over' and self.game_over_screen: #Manage Game Over state
                 self.game_over_screen.draw() #Draw the game over screen
                 self.input.update_screen(self.game_over_screen) #Make sure the input controller knows which screen is active
+            elif self.state == 'victory' and self.victory_screen: #Manage Game Over state
+                self.victory_screen.draw() #Draw the victory screen
+                self.input.update_screen(self.victory_screen) #Make sure the input controller knows which screen is active
+
             #END STATE MANAGEMENT
 
             pg.display.flip()
