@@ -99,7 +99,10 @@ class PlayScreen:
         print("got to end game")
         if hasattr(self, 'app') and self.app: #Check to make sure app exists as a good practice
             print("had app")
-            self.app.transition_to_game_over() #Call the transition_to_play method in GameApp with the selected number of mines
+            if self.loss:
+                self.app.transition_to_game_over() #Switch to the game over screen
+            else:
+                self.app.transition_to_victory() #Switch to the victory screen
 
     # Handle mouse events for uncovering and flagging cells
 
