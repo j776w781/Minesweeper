@@ -13,6 +13,7 @@ import pygame as pg
 from ...game.settings import WHITE, BLACK
 from ...model.board import make_grid, make_labels
 import random as rd
+from copy import deepcopy
 
 #PlayScreen class
 #uses board.py and cell.py to draw and play minesweeper
@@ -30,6 +31,7 @@ class PlayScreen:
         self.app = app
         self.loss = False
         self.board_cleared = False
+        self.end_grid = []
 
     # Draw the play screen, updating the display
     def draw(self):
@@ -55,7 +57,7 @@ class PlayScreen:
                 gamestate_surface = self.small_font.render("You lose!", True, BLACK) #Label to indicate loss
                 self.screen.fill(WHITE)
                 make_labels()
-                for cell in self.grid:
+                for cell in self.end_grid:
                     cell.draw(self.screen, cell.rect.x, cell.rect.y)
             #if user wins the game by revealing everything except mines
             else:
@@ -108,7 +110,7 @@ class PlayScreen:
             for index in adjacent_indices: 
                 if 0 <= index < len(grid): #check if index is valid
                     adjacent_cell = grid[index] #get the adjacent cell 
-                    if adjacent_cell.is_covered and not adjacent_cell.is_mine: #if the adjacent cell is covered and not a mine
+                    if adjacent_cell.is_covered and not adjacent_cell.is_mine: 
                         adjacent_cell.uncover()
                         self.remaining_cells -= 1
                         self.uncover_adjacent_cells(adjacent_cell, grid)
@@ -142,6 +144,8 @@ class PlayScreen:
                         #if the cell is a mine reveal to show user all mines
                         if cell.is_mine:
                             cell.uncover()
+                    if self.play_state != "game_over": #If the play_state is not already game_over
+                        self.end_grid = deepcopy(self.grid) # Store the current grid state for end game display
                     self.play_state = "game_over"
                     pg.time.set_timer(self.GAME_OVER_EVENT, 1000, loops=1)  # Set a timer to trigger GAME_OVER_EVENT after 1 second,
                     #the reason for the delay is to allow the player to see the mines before transitioning to game over screen  
