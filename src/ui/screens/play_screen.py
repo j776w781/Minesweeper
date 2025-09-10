@@ -86,8 +86,8 @@ class PlayScreen:
     
     # Randomly place mines on the grid and update adjacent mine counts  
     def set_mines(self, safe_cell):
-        safe_grid = self.grid.copy()
-        safe_grid.remove(safe_cell)
+        safe_grid = self.grid.copy() #make a copy of the grid to keep track of safe cells
+        safe_grid.remove(safe_cell) #remove the safe cell from the list of cells that can have mines
         for i in range(self.num_mines):
             target_cell = rd.choice(safe_grid)
             while target_cell.is_mine:
@@ -102,13 +102,13 @@ class PlayScreen:
     # Recursively uncover adjacent cells if they have zero adjacent mines
     def uncover_adjacent_cells(self, cell, grid):
         if cell.adjacent_mines == 0 and not cell.is_mine:
-            if cell.is_flagged == True:
-                return
-            adjacent_indices = self.adjacent_indices(cell)
-            for index in adjacent_indices:
-                if 0 <= index < len(grid):
-                    adjacent_cell = grid[index]
-                    if adjacent_cell.is_covered and not adjacent_cell.is_mine:
+            if cell.is_flagged == True: #if cell is flagged, do not unflag it
+                return 
+            adjacent_indices = self.adjacent_indices(cell) #get the indices of adjacent cells
+            for index in adjacent_indices: 
+                if 0 <= index < len(grid): #check if index is valid
+                    adjacent_cell = grid[index] #get the adjacent cell 
+                    if adjacent_cell.is_covered and not adjacent_cell.is_mine: #if the adjacent cell is covered and not a mine
                         adjacent_cell.uncover()
                         self.remaining_cells -= 1
                         self.uncover_adjacent_cells(adjacent_cell, grid)
