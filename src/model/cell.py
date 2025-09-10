@@ -40,14 +40,14 @@ class Cell:
             pg.draw.rect(surface, (0, 0, 0), rect, width=1)
             self.rect = rect
             if self.is_flagged:
-                pg.draw.circle(surface, (255, 0, 0), rect.center, 10) #Red Color
+                pg.draw.circle(surface, (255, 0, 0), rect.center, 10) #Red Color circle
         else: #uncovered cell drawing
             pg.draw.rect(surface, (229, 194, 159), rect, width=0) #Brown Color
             self.rect = rect
-            if self.is_mine:
+            if self.is_mine: #draw mine and color red
                 pg.draw.rect(surface, (255, 0, 0), rect, width=0)
-                pg.draw.circle(surface, (0, 0, 0), rect.center, 10)
-            elif self.adjacent_mines > 0:
+                pg.draw.circle(surface, (0, 0, 0), rect.center, 10) #Black Color circle
+            elif self.adjacent_mines > 0: #draw number of adjacent mines
                 font = pg.font.Font(None, 24)
                 text_surface = font.render(str(self.adjacent_mines), True, (0, 0, 0))
                 text_rect = text_surface.get_rect(center=rect.center)
