@@ -13,6 +13,9 @@ Components:
 
 Data Flow:
     - User input (click) -> InputController validates and sends to the active screen's event handler
+    - GameApp updates game states and triggers screen updates
+    - Board state changes trigger UI updates (e.g., render number, flag, or mine)
+    - PlayScreen updates Cell and Board state (e.g., uncover cell, place flag)
 
 Key Data Structures:
     -
