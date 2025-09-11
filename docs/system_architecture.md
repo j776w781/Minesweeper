@@ -18,7 +18,10 @@ Data Flow:
     - PlayScreen updates Cell and Board state (e.g., uncover cell, place flag)
 
 Key Data Structures:
-    -
+    - List with length 100 for grid: stores cell states using Cell objects, a row is 10 indices starting from 0, 10, 20, etc.
+    - Cell object: tracks if it is a mine, is covered, is flagged, and number of adjacent mines
+    - PlayScreen object: tracks mine count, flags remaining, cells remaining, play state, and win/loss status
+    - Button object: used for the player to adjust mine count, start game from start menu, and restart game from game over / victory menu
 
 Assumptions:
     - Fixed 10x10 grid size
