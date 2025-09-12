@@ -129,7 +129,7 @@ class PlayScreen:
     
     def handle_event(self, event):
         #when user clicks the board for the first time, game goes from "initial" to "playing"
-        if event.type == pg.MOUSEBUTTONDOWN:
+        if event.type == pg.MOUSEBUTTONDOWN and event.button == 1:
             if self.play_state == "initial":
                 self.play_state = "playing"
                 for cell in self.grid:
@@ -167,6 +167,9 @@ class PlayScreen:
                 if cell.rect.collidepoint(event.pos):
                     #if the user just placed a flag
                     if cell.is_flagged:
+                        if self.play_state == "initial":
+                            cell.toggle_flag() #does not let user place flag until play state in "playing"
+                            self.flags_left += 1
                         #if the flag counter is greater than 0 (more flags can be placed)
                         if self.flags_left > 0:
                             #place a flag and update counter
