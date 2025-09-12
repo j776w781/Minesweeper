@@ -143,7 +143,7 @@ class PlayScreen:
                     for cell in self.grid:
                         #if the cell is a mine reveal to show user all mines
                         if cell.is_mine:
-                            cell.uncover()
+                            cell.uncover(override=True)
                     if self.play_state != "game_over": #If the play_state is not already game_over
                         self.end_grid = deepcopy(self.grid) # Store the current grid state for end game display
                     self.play_state = "game_over"

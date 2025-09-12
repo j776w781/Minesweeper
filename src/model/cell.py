@@ -19,8 +19,8 @@ class Cell:
         self.adjacent_mines = 0
         self.rect = pg.Rect(0, 0, 20, 20) #default size, will be set later
     #uncover will uncover the cell if it is not flagged
-    def uncover(self):
-        if not self.is_flagged:
+    def uncover(self, override: bool=False): #override flag to force uncover mines even if they are flagged
+        if not self.is_flagged or override:
             self.is_covered = False
     #toggle_flag will toggle the flag on the cell if it is covered
     def toggle_flag(self):
