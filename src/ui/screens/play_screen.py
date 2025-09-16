@@ -169,7 +169,7 @@ class PlayScreen:
                     if cell.is_flagged:
                         if self.play_state == "initial":
                             cell.toggle_flag() #does not let user place flag until play state in "playing"
-                            self.flags_left += 1
+                            self.flags_left += 1 #fix flag count to keep at 10 before game
                         #if the flag counter is greater than 0 (more flags can be placed)
                         if self.flags_left > 0:
                             #place a flag and update counter
@@ -186,6 +186,8 @@ class PlayScreen:
                     else:
                         #cell.py takes care of flag removal, so just update flag counter
                         self.flags_left += 1
+                    if not cell.is_covered: #if cell is already uncovered
+                        self.flags_left -= 1 #remove a counter to keep it at true flag count
                     
         if event.type == self.GAME_OVER_EVENT:
             self.end_game()
