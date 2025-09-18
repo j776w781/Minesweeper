@@ -32,7 +32,9 @@ class PlayScreen:
         self.loss = False
         self.board_cleared = False
         self.end_grid = []
-
+        self.instructions = pg.font.Font(None,28).render(f"Left Click to Uncover, Right Click to Flag", True, BLACK)
+        self.instructions_2 = pg.font.Font(None,28).render(f"Numbers Indicate Adjacent Mines", True, BLACK)
+        self.instructions_3 = pg.font.Font(None,28).render(f"Uncover All Cells and Flag All Mines to Win!", True, BLACK)
     # Draw the play screen, updating the display
     def draw(self):
         #draw the grid, add labels, and make the board ready for user to play
@@ -70,7 +72,9 @@ class PlayScreen:
         mines_surface = self.small_font.render(f"Mines Left: {self.flags_left}", True, BLACK)
         self.screen.blit(mines_surface, (57, 490))
         self.screen.blit(gamestate_surface, (30, 30)) #Draw game_state label
-
+        self.screen.blit(self.instructions, (57, 510)) #Draw instructions label
+        self.screen.blit(self.instructions_2, (57, 530)) #Draw instructions label
+        self.screen.blit(self.instructions_3, (57, 550)) #Draw instructions label
         #update the display
         pg.display.update()
 
