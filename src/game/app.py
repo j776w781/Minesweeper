@@ -1,5 +1,5 @@
 """
-Program name: app.y
+Program name: app.py
 Description: This is the core backend of the program that manages which screen is active
 and the transitions between each of the files
 Inputs: takes in number of mines from the user
@@ -19,8 +19,11 @@ from ..input.mouse import InputController
      
 class GameApp:
     def __init__(self):
-        pg.init()
+        pg.display.set_caption("Minesweeper", icontitle="Minesweeper") #Set the window caption to say "Minesweeper"
+        Icon = pg.image.load(r"Minesweeper/src/ui/sprites/mineCon.png") #Load the minesweeper icon from the sprites folder
+        pg.display.set_icon(Icon) #Set it as the window's icon
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
+        pg.init()
         self.clock = pg.time.Clock()
         self.input = InputController()
         self.state = 'start'
