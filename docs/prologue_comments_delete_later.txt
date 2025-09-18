@@ -1,9 +1,0 @@
-"""
-Program name:
-Description:
-Inputs:
-Outputs:
-External sources:
-Authors:
-Creation date:
-"""
