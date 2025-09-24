@@ -33,6 +33,16 @@ class StartScreen:
         )
         self.interactibles.append(self.play_button)
 
+        self.ai_button = Button(
+            x=screen.get_width() // 2 - 100,
+            y=screen.get_height() // 2 + 100,
+            width=200,
+            height=50,
+            text="AI Mode",
+            action=self.enable_ai
+        )
+        self.interactibles.append(self.ai_button)
+
         #Increase mines button
         self.increment_button = Button(
             x=screen.get_width() // 2 + 130,
@@ -61,6 +71,11 @@ class StartScreen:
     def start_game(self):
         if hasattr(self, 'app') and self.app: #Check to make sure app exists as a good practice
             self.app.transition_to_play(self.num_mines) #Call the transition_to_play method in GameApp with the selected number of mines
+
+    #Go into AI mode...whatever that means...
+    def enable_ai(self):
+        if hasattr(self, 'app') and self.app:
+            self.app.transition_to_ai_play(self.num_mines)
 
     #Increase the amount of mines 
     def more_mines(self):
@@ -94,6 +109,9 @@ class StartScreen:
 
         #Draw play button
         self.play_button.draw(self.screen)
+
+        #Draw ai button
+        self.ai_button.draw(self.screen)
 
     #When an event is called
     def handle_event(self, event):
