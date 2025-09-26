@@ -14,8 +14,15 @@ class AiSolver:
         pass
 
 
-    def AIMove(self, screen):
-         self.easyMode(screen)
+    def AIMove(self, screen, difficulty):
+        if difficulty == 'easy':
+            self.easyMode(screen)
+        elif difficulty == 'medium':
+            self.mediumMode(screen)
+        elif difficulty == 'hard':
+            self.hardMode(screen)
+        else:
+            pass
 
     def easyMode(self, screen):
         screen.draw()
@@ -24,18 +31,20 @@ class AiSolver:
         new_event = pg.event.Event(pg.MOUSEBUTTONDOWN, {'button': 1, 'pos': (75 + (40*x), 110 + (40*y))})
         screen.handle_event(new_event)
         if screen.play_state == 'game_over':
-            for cell in screen.grid:
-                        #if the cell is a mine reveal to show user all mines
-                        if cell.is_mine:
-                            cell.uncover(override=True)
-            screen.draw()
-            time.sleep(1)
-            screen.loss == True
-            screen.end_game()
+            if screen.loss == True:
+                for cell in screen.grid:
+                    #if the cell is a mine reveal to show user all mines
+                    if cell.is_mine:
+                        cell.uncover(override=True)
+                screen.draw()
+                time.sleep(1)
+                screen.end_game()
+            else:
+                screen.end_game()
 
-    def mediumMode(self):
-        pass
+    def mediumMode(self, screen):
+        print("Medium mode enabled")
 
-    def hardMode(self):
-        pass
+    def hardMode(self, screen):
+        print("Hard mode enabled")
 

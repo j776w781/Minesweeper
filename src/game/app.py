@@ -28,6 +28,9 @@ class GameApp:
         self.input = InputController()
         self.state = 'start'
         self.ai = None
+        self.auto = True
+        self.interact = False
+        self.difficulty = None
         self.play_screen = None #Will be initialized when transitioning to play state
 
     def transition_to_play(self, num_mines): #Called by StartScreen when play button is pressed
@@ -35,9 +38,10 @@ class GameApp:
         self.play_screen = PlayScreen(self.screen, num_mines, self) #Initialize the play screen with the selected number of mines
         self.state = 'play'
 
-    def transition_to_ai_play(self, num_mines):
+    def transition_to_ai_play(self, num_mines, difficulty):
         self.start_screen = None
         self.play_screen = PlayScreen(self.screen, num_mines, self)
+        self.difficulty = difficulty
         self.state = 'ai play'
 
     def transition_to_game_over(self): #Called by PlayScreen when the game is Over
@@ -77,7 +81,7 @@ class GameApp:
             elif self.state == 'ai play' and self.play_screen:
                 if self.ai == None:
                     self.ai = AiSolver()
-                self.ai.AIMove(self.play_screen)
+                self.ai.AIMove(self.play_screen, self.difficulty)
                 #self.ai.easyMode(self.play_screen)
                 time.sleep(1)
             elif self.state == 'game_over' and self.game_over_screen: #Manage Game Over state

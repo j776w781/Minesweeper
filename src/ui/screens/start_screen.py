@@ -40,7 +40,7 @@ class StartScreen:
             width=100,
             height=50,
             text="Auto",
-            action=self.enable_ai
+            action=self.toggle_auto
         )
         self.interactibles.append(self.auto_button)
 
@@ -51,7 +51,7 @@ class StartScreen:
             width=140,
             height=50,
             text="Interactive",
-            action=self.enable_ai
+            action=self.toggle_interact
         )
         self.interactibles.append(self.inter_button)
 
@@ -84,7 +84,7 @@ class StartScreen:
             width=100,
             height=50,
             text="Easy",
-            action=self.enable_ai
+            action=self.enable_easy_ai
         )
         self.interactibles.append(self.easy_button)
 
@@ -94,7 +94,7 @@ class StartScreen:
             width=100,
             height=50,
             text="Medium",
-            action=self.enable_ai
+            action=self.enable_medium_ai
         )
         self.interactibles.append(self.med_button)
 
@@ -104,7 +104,7 @@ class StartScreen:
             width=100,
             height=50,
             text="Hard",
-            action=self.enable_ai
+            action=self.enable_hard_ai
         )
         self.interactibles.append(self.hard_button)
 
@@ -116,9 +116,25 @@ class StartScreen:
             self.app.transition_to_play(self.num_mines) #Call the transition_to_play method in GameApp with the selected number of mines
 
     #Go into AI mode...whatever that means...
-    def enable_ai(self):
+    def enable_easy_ai(self):
         if hasattr(self, 'app') and self.app:
-            self.app.transition_to_ai_play(self.num_mines)
+            self.app.transition_to_ai_play(self.num_mines, 'easy')
+
+    def enable_medium_ai(self):
+        if hasattr(self, 'app') and self.app:
+            self.app.transition_to_ai_play(self.num_mines, 'medium')
+
+    def enable_hard_ai(self):
+        if hasattr(self, 'app') and self.app:
+            self.app.transition_to_ai_play(self.num_mines, 'hard')
+
+    def toggle_interact(self):
+        self.app.auto = False
+        self.app.interact = True
+    
+    def toggle_auto(self):
+        self.app.interact = False
+        self.app.auto = True
 
     #Increase the amount of mines 
     def more_mines(self):
