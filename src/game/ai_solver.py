@@ -13,6 +13,10 @@ class AiSolver:
     def __init__(self):
         pass
 
+
+    def AIMove(self, screen):
+         self.easyMode(screen)
+
     def easyMode(self, screen):
         screen.draw()
         x = random.randint(0, 9)

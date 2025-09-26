@@ -33,15 +33,27 @@ class StartScreen:
         )
         self.interactibles.append(self.play_button)
 
-        self.ai_button = Button(
-            x=screen.get_width() // 2 - 100,
-            y=screen.get_height() // 2 + 100,
-            width=200,
+        # Auto mode button
+        self.auto_button = Button(
+            x=screen.get_width() // 2 - 80,
+            y=screen.get_height() // 2 + 200,
+            width=100,
             height=50,
-            text="AI Mode",
+            text="Auto",
             action=self.enable_ai
         )
-        self.interactibles.append(self.ai_button)
+        self.interactibles.append(self.auto_button)
+
+        #Interactive mode button
+        self.inter_button = Button(
+            x=screen.get_width() // 2 + 30,
+            y=screen.get_height() // 2 + 200,
+            width=140,
+            height=50,
+            text="Interactive",
+            action=self.enable_ai
+        )
+        self.interactibles.append(self.inter_button)
 
         #Increase mines button
         self.increment_button = Button(
@@ -64,6 +76,37 @@ class StartScreen:
             action=self.less_mines
         )
         self.interactibles.append(self.decrement_button)
+
+
+        self.easy_button = Button(
+            x=screen.get_width() // 2 - 80,
+            y=screen.get_height() // 2 + 100,
+            width=100,
+            height=50,
+            text="Easy",
+            action=self.enable_ai
+        )
+        self.interactibles.append(self.easy_button)
+
+        self.med_button = Button(
+            x=screen.get_width() // 2 +30,
+            y=screen.get_height() // 2 + 100,
+            width=100,
+            height=50,
+            text="Medium",
+            action=self.enable_ai
+        )
+        self.interactibles.append(self.med_button)
+
+        self.hard_button = Button(
+            x=screen.get_width() // 2 +140,
+            y=screen.get_height() // 2 + 100,
+            width=100,
+            height=50,
+            text="Hard",
+            action=self.enable_ai
+        )
+        self.interactibles.append(self.hard_button)
 
     #Start the game when play button is pressed
     #Calls back to the main GameApp to transition to play state
@@ -110,8 +153,23 @@ class StartScreen:
         #Draw play button
         self.play_button.draw(self.screen)
 
+
+        #Number of mines
+        ai_diff_surface = self.small_font.render("AI Difficulty: ", True, (255, 255, 255))
+        ai_diff_rect = ai_diff_surface.get_rect(center=(self.screen.get_width() // 6, 400))
+        self.screen.blit(ai_diff_surface, ai_diff_rect)
+
+
         #Draw ai button
-        self.ai_button.draw(self.screen)
+        self.auto_button.draw(self.screen)
+
+        self.inter_button.draw(self.screen)
+
+        self.easy_button.draw(self.screen)
+
+        self.med_button.draw(self.screen)
+
+        self.hard_button.draw(self.screen)
 
     #When an event is called
     def handle_event(self, event):

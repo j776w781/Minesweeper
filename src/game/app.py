@@ -77,7 +77,8 @@ class GameApp:
             elif self.state == 'ai play' and self.play_screen:
                 if self.ai == None:
                     self.ai = AiSolver()
-                self.ai.easyMode(self.play_screen)
+                self.ai.AIMove(self.play_screen)
+                #self.ai.easyMode(self.play_screen)
                 time.sleep(1)
             elif self.state == 'game_over' and self.game_over_screen: #Manage Game Over state
                 self.game_over_screen.draw() #Draw the game over screen
