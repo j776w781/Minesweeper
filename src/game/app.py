@@ -78,16 +78,20 @@ class GameApp:
             elif self.state == 'play' and self.play_screen: #Manage Play state
                 self.play_screen.draw() #Draw the play screen
                 self.input.update_screen(self.play_screen) #Make sure the input controller knows which screen is active
+
+                # You might notice we change the state to 'play' and the player to 'human' in the 'ai play' state during Interactive Mode
+                    # Why don't reverse that here? Because we have to wait for the 'human' to actually make their move.
+                    # Refer to play_screen.py's handle_event method to see where we set the state to 'ai play' and the player to 'ai'
+
             elif self.state == 'ai play' and self.play_screen:
-                if self.ai == None:
-                    self.ai = AiSolver()
-                    self.player = 'ai'
-                if self.player == 'ai':
-                    print('AI making a move.')
-                    self.ai.AIMove(self.play_screen, self.difficulty)
-                    if self.interact:
-                        self.state = 'play'
-                        self.player = 'human'            
+                if self.ai == None: # When we first start AI mode, we need to create our AI
+                    self.ai = AiSolver() # Create the AI
+                    self.player = 'ai' # Set the active player to AI
+                if self.player == 'ai': 
+                    self.ai.AIMove(self.play_screen, self.difficulty) # Make a move when active player is AI
+                    if self.interact: # If we are in Interactive mode...
+                        self.state = 'play' # ...set the state back to 'play'...
+                        self.player = 'human' # ...mark the active player as 'human'           
             elif self.state == 'game_over' and self.game_over_screen: #Manage Game Over state
                 self.game_over_screen.draw() #Draw the game over screen
                 self.ai = None

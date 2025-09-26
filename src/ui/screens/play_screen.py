@@ -141,9 +141,10 @@ class PlayScreen:
                         self.set_mines(cell) #set mines after the first click to keep begining safe
         for cell in self.grid:
             if cell.handle_event(event):
+                # We check here for the human's mouse click input when an AI has been initialized.
                 if self.app.player == 'human' and self.app.ai != None:
-                    self.app.player = 'ai'
-                    self.app.state = 'ai play'
+                    self.app.player = 'ai' # For interactive mode we set the player back to 'ai'
+                    self.app.state = 'ai play' # For interactive mode we set the state back to 'ai play'
                 #if mine was revealed and not flagged
                 if cell.is_mine and not cell.is_flagged: #Need to make sure the cell isn't already flagged
                     self.loss = True #user loses game
