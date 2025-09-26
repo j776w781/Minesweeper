@@ -28,6 +28,7 @@ class GameApp:
         self.input = InputController()
         self.state = 'start'
         self.ai = None
+        self.player = 'human'
         self.interact = False
         self.difficulty = None
         self.play_screen = None #Will be initialized when transitioning to play state
@@ -80,14 +81,20 @@ class GameApp:
             elif self.state == 'ai play' and self.play_screen:
                 if self.ai == None:
                     self.ai = AiSolver()
-                self.ai.AIMove(self.play_screen, self.difficulty)
-                #self.ai.easyMode(self.play_screen)
-                time.sleep(1)
+                    self.player = 'ai'
+                if self.player == 'ai':
+                    print('AI making a move.')
+                    self.ai.AIMove(self.play_screen, self.difficulty)
+                    if self.interact:
+                        self.state = 'play'
+                        self.player = 'human'            
             elif self.state == 'game_over' and self.game_over_screen: #Manage Game Over state
                 self.game_over_screen.draw() #Draw the game over screen
+                self.ai = None
                 self.input.update_screen(self.game_over_screen) #Make sure the input controller knows which screen is active
             elif self.state == 'victory' and self.victory_screen: #Manage Game Over state
                 self.victory_screen.draw() #Draw the victory screen
+                self.ai = None
                 self.input.update_screen(self.victory_screen) #Make sure the input controller knows which screen is active
 
             #END STATE MANAGEMENT
