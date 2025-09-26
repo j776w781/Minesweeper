@@ -129,12 +129,10 @@ class StartScreen:
             self.app.transition_to_ai_play(self.num_mines, 'hard')
 
     def toggle_interact(self):
-        self.app.auto = False
         self.app.interact = True
     
     def toggle_auto(self):
         self.app.interact = False
-        self.app.auto = True
 
     #Increase the amount of mines 
     def more_mines(self):

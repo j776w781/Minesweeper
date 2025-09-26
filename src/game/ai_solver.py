@@ -11,7 +11,8 @@ from ..model.cell import Cell
 
 class AiSolver:
     def __init__(self):
-        pass
+        self.firstMove = True
+        self.legalMoves = []
 
 
     def AIMove(self, screen, difficulty):
@@ -46,5 +47,50 @@ class AiSolver:
         print("Medium mode enabled")
 
     def hardMode(self, screen):
-        print("Hard mode enabled")
+        self.legalMoves = []
+        for i in range(0, 100):
+            self.legalMoves.append(i)
+        screen.draw()
+        if self.firstMove:
+            new_event = pg.event.Event(pg.MOUSEBUTTONDOWN, {'button': 1, 'pos': (75, 110)})
+            screen.handle_event(new_event)
+            self.firstMove = False
+
+        for index in range(len(screen.grid)):
+            if screen.grid[index].is_mine:
+                bad_index = self.legalMoves.index(index)
+                self.legalMoves.pop(bad_index)
+            elif not screen.grid[index].is_covered:
+                bad_index = self.legalMoves.index(index)
+                self.legalMoves.pop(bad_index)
+
+        move = random.choice(self.legalMoves)
+        if move > 9:
+            move = str(move)
+            y = int(move[0])
+            x = int(move[1])
+        else:
+            y = 0
+            x = move
+
+        new_event = pg.event.Event(pg.MOUSEBUTTONDOWN, {'button': 1, 'pos': (75 + (40*x), 110 + (40*y))})
+        screen.handle_event(new_event)
+
+        if screen.remaining_cells == 0:
+            screen.play_state = 'game_over'
+
+        if screen.play_state == 'game_over':
+            if screen.loss == True:
+                for cell in screen.grid:
+                    #if the cell is a mine reveal to show user all mines
+                    if cell.is_mine:
+                        cell.uncover(override=True)
+                screen.draw()
+                time.sleep(1)
+                screen.end_game()
+            else:
+                screen.draw()
+                time.sleep(1)
+                screen.end_game()
+
 

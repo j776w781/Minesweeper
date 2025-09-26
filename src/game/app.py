@@ -28,7 +28,6 @@ class GameApp:
         self.input = InputController()
         self.state = 'start'
         self.ai = None
-        self.auto = True
         self.interact = False
         self.difficulty = None
         self.play_screen = None #Will be initialized when transitioning to play state
