@@ -80,7 +80,7 @@ class GameApp:
                 self.input.update_screen(self.play_screen) #Make sure the input controller knows which screen is active
 
                 # You might notice we change the state to 'play' and the player to 'human' in the 'ai play' state during Interactive Mode
-                    # Why don't reverse that here? Because we have to wait for the 'human' to actually make their move.
+                    # Why not reverse that here? Because we have to wait for the 'human' to actually make their move.
                     # Refer to play_screen.py's handle_event method to see where we set the state to 'ai play' and the player to 'ai'
 
             elif self.state == 'ai play' and self.play_screen:

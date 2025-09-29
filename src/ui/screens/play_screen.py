@@ -164,9 +164,8 @@ class PlayScreen:
                     print(f"Cell at index {self.grid.index(cell)} uncovered with {cell.adjacent_mines} adjacent mines. {self.remaining_cells} cells remaining.")
                 #if all mines are flagged and all other cells revealed, game won
                 if self.remaining_cells == 0:
-                    if self. flags_left == 0: #If the number of flags left is 0
-                        self.play_state = "game_over" #Set the play_state to game_over
-                        pg.time.set_timer(self.GAME_OVER_EVENT, 1000, loops=1) #Set a timer to trigger GAME_OVER_EVENT after 1 sec
+                    self.play_state = "game_over" #Set the play_state to game_over
+                    pg.time.set_timer(self.GAME_OVER_EVENT, 1000, loops=1) #Set a timer to trigger GAME_OVER_EVENT after 1 sec
                     self.board_cleared = True #If the # of uncleared, non-mine cells is 0, set this flag to true
 
         #checks if user right clicks (add flag) and adjust the flag count           
