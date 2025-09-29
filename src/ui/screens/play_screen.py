@@ -30,6 +30,8 @@ class PlayScreen:
         self.remaining_cells = 100 - num_mines  # Total cells minus mines
         self.app = app
         self.loss = False
+        self.winning_player = 'human'
+        self.losing_player = 'human'
         self.board_cleared = False
         self.end_grid = []
         self.instructions = pg.font.Font(None,28).render(f"Left Click to Uncover, Right Click to Flag", True, BLACK)
@@ -56,14 +58,22 @@ class PlayScreen:
         elif self.play_state == "game_over":
             #if mine is hit and user loses the game
             if self.loss:
-                gamestate_surface = self.small_font.render("You lose!", True, BLACK) #Label to indicate loss
+                if self.losing_player == 'human':
+                    gamestate_surface = self.small_font.render("You lose!", True, BLACK) #Label to indicate loss
+                else:
+                    gamestate_surface = self.small_font.render("AI loses!", True, BLACK) #Label to indicate loss
+
                 self.screen.fill(WHITE)
                 make_labels()
                 for cell in self.end_grid:
                     cell.draw(self.screen, cell.rect.x, cell.rect.y)
             #if user wins the game by revealing everything except mines
             else:
-                gamestate_surface = self.small_font.render("You win!", True, BLACK) #Label to indicate victory
+                if self.winning_player == 'human':
+                    gamestate_surface = self.small_font.render("You win!", True, BLACK) #Label to indicate victory
+                else:
+                    gamestate_surface = self.small_font.render("AI wins!", True, BLACK) #Label to indicate loss
+
                 self.screen.fill(WHITE)
                 make_labels()
                 for cell in self.grid:
@@ -141,13 +151,10 @@ class PlayScreen:
                         self.set_mines(cell) #set mines after the first click to keep begining safe
         for cell in self.grid:
             if cell.handle_event(event):
-                # We check here for the human's mouse click input when an AI has been initialized.
-                if self.app.player == 'human' and self.app.ai != None:
-                    self.app.player = 'ai' # For interactive mode we set the player back to 'ai'
-                    self.app.state = 'ai play' # For interactive mode we set the state back to 'ai play'
                 #if mine was revealed and not flagged
                 if cell.is_mine and not cell.is_flagged: #Need to make sure the cell isn't already flagged
                     self.loss = True #user loses game
+                    self.losing_player = self.app.player
                     for cell in self.grid:
                         #if the cell is a mine reveal to show user all mines
                         if cell.is_mine:
@@ -165,8 +172,13 @@ class PlayScreen:
                 #if all mines are flagged and all other cells revealed, game won
                 if self.remaining_cells == 0:
                     self.play_state = "game_over" #Set the play_state to game_over
+                    self.winning_player = self.app.player
                     pg.time.set_timer(self.GAME_OVER_EVENT, 1000, loops=1) #Set a timer to trigger GAME_OVER_EVENT after 1 sec
                     self.board_cleared = True #If the # of uncleared, non-mine cells is 0, set this flag to true
+            # We check here for the human's mouse click input when an AI has been initialized.
+                if self.app.player == 'human' and self.app.ai != None:
+                    self.app.player = 'ai' # For interactive mode we set the player back to 'ai'
+                    self.app.state = 'ai play' # For interactive mode we set the state back to 'ai play'
 
         #checks if user right clicks (add flag) and adjust the flag count           
         if event.type == pg.MOUSEBUTTONDOWN and event.button == 3:
