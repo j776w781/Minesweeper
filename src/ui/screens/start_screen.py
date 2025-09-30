@@ -168,9 +168,14 @@ class StartScreen:
         self.play_button.draw(self.screen)
 
 
-        #Number of mines
+        #AI Difficulty
         ai_diff_surface = self.small_font.render("AI Difficulty: ", True, (255, 255, 255))
         ai_diff_rect = ai_diff_surface.get_rect(center=(self.screen.get_width() // 6, 400))
+        self.screen.blit(ai_diff_surface, ai_diff_rect)
+
+        #AI Mode
+        ai_diff_surface = self.small_font.render("AI Mode: ", True, (255, 255, 255))
+        ai_diff_rect = ai_diff_surface.get_rect(center=(self.screen.get_width() // 8, self.screen.get_height() // 2 + 210))
         self.screen.blit(ai_diff_surface, ai_diff_rect)
 
 
