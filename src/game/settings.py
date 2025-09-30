@@ -27,3 +27,13 @@ NUM_ROWS = BOX_HIGHT // BLOCKSIZE
 WINDOW_WIDTH = 800
 WINDOW_HEIGHT = 600
 SCREEN = pygame.display.set_mode((WINDOW_WIDTH, WINDOW_HEIGHT))
+
+pygame.init()
+pygame.mixer.init()
+
+SOUND_ON = True
+
+#sound assets
+CLICK_SOUND = pygame.mixer.Sound("click.mp3")
+FLAG_SOUND = pygame.mixer.Sound("flag.mp3")
+BOMB_SOUND = pygame.mixer.Sound("bomb.mp3")
