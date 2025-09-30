@@ -12,6 +12,8 @@ Creation date: 28 August 2025
 import pygame as pg
 from ..button import Button
 
+from src.game import settings
+
 class StartScreen:
     def __init__(self, screen, app=None): 
         #Initialize the start screen
@@ -36,7 +38,7 @@ class StartScreen:
         # Auto mode button
         self.auto_button = Button(
             x=screen.get_width() // 2 - 80,
-            y=screen.get_height() // 2 + 200,
+            y=screen.get_height() // 2 + 185,
             width=100,
             height=50,
             text="Auto",
@@ -47,7 +49,7 @@ class StartScreen:
         #Interactive mode button
         self.inter_button = Button(
             x=screen.get_width() // 2 + 30,
-            y=screen.get_height() // 2 + 200,
+            y=screen.get_height() // 2 + 185,
             width=140,
             height=50,
             text="Interactive",
@@ -108,6 +110,17 @@ class StartScreen:
         )
         self.interactibles.append(self.hard_button)
 
+        #Sound button
+        self.sound_button = Button(
+            x=screen.get_width() // 2 - 50,
+            y=screen.get_height() // 2 + 240,
+            width=120,
+            height=50,
+            text="Sound: On",
+            action=self.toggle_sound
+        )
+        self.interactibles.append(self.sound_button)
+
     #Start the game when play button is pressed
     #Calls back to the main GameApp to transition to play state
     #defined only if app is provided
@@ -167,6 +180,8 @@ class StartScreen:
         #Draw play button
         self.play_button.draw(self.screen)
 
+        #Draw sound button
+        self.sound_button.draw(self.screen)
 
         #AI Difficulty
         ai_diff_surface = self.small_font.render("AI Difficulty: ", True, (255, 255, 255))
@@ -194,3 +209,7 @@ class StartScreen:
     def handle_event(self, event):
         for button in self.interactibles: #Check to see which interactible it hit
             button.handle_event(event)
+
+    def toggle_sound(self):
+        settings.SOUND_ON = not settings.SOUND_ON
+        self.sound_button.text = "Sound: On" if settings.SOUND_ON else "Sound: Off"
