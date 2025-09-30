@@ -1,5 +1,0 @@
-Implement StartScreen and Button classes; refactor GameApp to integrate StartScreen, .5
-Manage Game State Transitions, 1
-Add Game Over Screen and Restart Button, 1
-Fine Tune Formatting and Colors, .5
-Victory Screen Implementation, .25
