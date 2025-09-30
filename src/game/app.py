@@ -37,6 +37,11 @@ class GameApp:
         self.start_screen = None #Clear the start screen
         self.play_screen = PlayScreen(self.screen, num_mines, self) #Initialize the play screen with the selected number of mines
         self.state = 'play'
+        '''
+        I found that playing auto-AI mode and transitioning back to human only mode led to the wrong "you lose" message
+        being printed.
+        '''
+        self.player = 'human'
 
     def transition_to_ai_play(self, num_mines, difficulty):
         self.start_screen = None
@@ -48,6 +53,7 @@ class GameApp:
         self.play_screen = None #Clear the play screen
         self.game_over_screen = GameOverScreen(self.screen, self) #Initialize the game over screen
         self.state = 'game_over'
+        print(f"State changed to {self.state}")
 
     def transition_to_victory(self): #Called by PlayScreen when the game is won
         self.play_screen = None #Clear the play screen
@@ -65,6 +71,7 @@ class GameApp:
         start_screen = StartScreen(self.screen, self) #We only want to initialize the start screen once, or else it will keep overwriting itself - MJ
                                                     #Pass self to allow StartScreen to call back to GameApp, that becomes the app parameter in StartScreen
         while running:
+            #print(self.state)
             for e in pg.event.get():
                 if e.type == pg.QUIT:
                     running = False
@@ -90,8 +97,16 @@ class GameApp:
                 if self.player == 'ai': 
                     self.ai.AIMove(self.play_screen, self.difficulty) # Make a move when active player is AI
                     if self.interact: # If we are in Interactive mode...
+                        #print("ITS ME!")
                         self.state = 'play' # ...set the state back to 'play'...
-                        self.player = 'human' # ...mark the active player as 'human'           
+                        self.player = 'human' # ...mark the active player as 'human'     
+                
+                '''
+                I found that I could keep resetting the game during AI auto mode, since the input's screen variable
+                was never updated in this step. The for loop above was passing my mouse clicks to the StartScreen and screwing
+                everything up.
+                '''
+                self.input.update_screen(self.play_screen)      
             elif self.state == 'game_over' and self.game_over_screen: #Manage Game Over state
                 self.game_over_screen.draw() #Draw the game over screen
                 self.ai = None

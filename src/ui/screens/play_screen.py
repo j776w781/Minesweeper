@@ -14,6 +14,7 @@ from ...game.settings import WHITE, BLACK
 from ...model.board import make_grid, make_labels
 import random as rd
 from copy import deepcopy
+import time
 
 #PlayScreen class
 #uses board.py and cell.py to draw and play minesweeper
@@ -130,9 +131,15 @@ class PlayScreen:
                         self.uncover_adjacent_cells(adjacent_cell, grid)
     def end_game(self):
         print("got to end game")
+        '''
+        Slight tweaks to this function greatly reduce the code needed in the AISolver methods.
+        '''
+        self.draw()
+        time.sleep(1)
         if hasattr(self, 'app') and self.app: #Check to make sure app exists as a good practice
             print("had app")
             if self.loss:
+                #print("HERE")
                 self.app.transition_to_game_over() #Switch to the game over screen
             else:
                 self.app.transition_to_victory() #Switch to the victory screen
@@ -153,11 +160,13 @@ class PlayScreen:
             if cell.handle_event(event):
                 #if mine was revealed and not flagged
                 if cell.is_mine and not cell.is_flagged: #Need to make sure the cell isn't already flagged
+                    print("BOOM")
                     self.loss = True #user loses game
                     self.losing_player = self.app.player
                     for cell in self.grid:
                         #if the cell is a mine reveal to show user all mines
                         if cell.is_mine:
+                            print("Uncover")
                             cell.uncover(override=True)
                     if self.play_state != "game_over": #If the play_state is not already game_over
                         self.end_grid = deepcopy(self.grid) # Store the current grid state for end game display
@@ -176,7 +185,14 @@ class PlayScreen:
                     pg.time.set_timer(self.GAME_OVER_EVENT, 1000, loops=1) #Set a timer to trigger GAME_OVER_EVENT after 1 sec
                     self.board_cleared = True #If the # of uncleared, non-mine cells is 0, set this flag to true
             # We check here for the human's mouse click input when an AI has been initialized.
-                if self.app.player == 'human' and self.app.ai != None:
+
+                '''
+                After I fixed the lingering start screen problem, I found that I couldn't replay in interactive mode anymore.
+                It turned out this block of code was changing the app state back to ai play, even after a losing or winning move.
+
+                Updated the predicate to compensate.
+                '''
+                if self.app.player == 'human' and self.app.ai != None and not self.loss and not self.board_cleared:
                     self.app.player = 'ai' # For interactive mode we set the player back to 'ai'
                     self.app.state = 'ai play' # For interactive mode we set the state back to 'ai play'
 

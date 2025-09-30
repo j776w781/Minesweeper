@@ -11,6 +11,7 @@ from ..model.cell import Cell
 
 class AiSolver:
     def __init__(self):
+        #This attribute is no longer necessary.
         self.firstMove = True
         self.legalMoves = []
 
@@ -34,12 +35,17 @@ class AiSolver:
         # Now draw the screen.
         screen.draw()
 
+
+        '''
+        PlayScreen's handler already accounts for the first click, so this code should be unnecessary.
+
         # If this is the first move, we need to make a default move because no mines have been set.
         if self.firstMove:
             new_event = pg.event.Event(pg.MOUSEBUTTONDOWN, {'button': 1, 'pos': (75, 110)})
             screen.handle_event(new_event)
             self.firstMove = False
             return
+        '''
 
          # When we make any generic move, we read the board and remove all illegal moves.
             # These include cells that are uncovered only (because it's easy mode).
@@ -66,6 +72,10 @@ class AiSolver:
             # Then we send that mouse click over to the play screen to be handled with the previous group's code.
             screen.handle_event(new_event)
 
+        '''
+        The PlayScreen handler does win/loss checking already. I applied a minor tweak to the PlayScreen's end_game() method 
+        so that this printing wouldn't be necessary.
+
         # We check here for a game win or loss (because for some reason it doesn't work in the previous group's loop)
             # The previous group didn't fail us, but somehow our intervention breaks their game loop.
         if screen.remaining_cells == 0:
@@ -84,6 +94,7 @@ class AiSolver:
                 screen.draw()
                 time.sleep(1)
                 screen.end_game()
+        '''
         
         # We then wait a second between each move.
         time.sleep(1)
@@ -95,12 +106,15 @@ class AiSolver:
 
         screen.draw()
 
+
+        '''
         # If this is the first move, we need to make a default move because no mines have been set.
         if self.firstMove:
             new_event = pg.event.Event(pg.MOUSEBUTTONDOWN, {'button': 1, 'pos': (75, 110)})
             screen.handle_event(new_event)
             self.firstMove = False
             return
+        '''
 
         # We will iterate through the entire board looking for obvious bomb locations.
         bomb_spaces = []
@@ -185,6 +199,7 @@ class AiSolver:
             # Then we send that mouse click over to the play screen to be handled with the previous group's code.
             screen.handle_event(new_event)
 
+        '''
         # We check here for a game win or loss (because for some reason it doesn't work in the previous group's loop)
             # The previous group didn't fail us, but somehow our intervention breaks their game loop.
         if screen.remaining_cells == 0:
@@ -203,6 +218,7 @@ class AiSolver:
                 screen.draw()
                 time.sleep(1)
                 screen.end_game()
+        '''
         
         # We then wait a second between each move.
         time.sleep(1)
@@ -216,12 +232,15 @@ class AiSolver:
         # Now draw the screen.
         screen.draw()
 
+
+        '''
         # If this is the first move, we need to make a default move because no mines have been set.
         if self.firstMove:
             new_event = pg.event.Event(pg.MOUSEBUTTONDOWN, {'button': 1, 'pos': (75, 110)})
             screen.handle_event(new_event)
             self.firstMove = False
             return
+        '''
 
         # When we make any generic move, we read the board and remove all illegal moves.
             # These include cells that are uncovered, and cells with bombs (for hard mode).
@@ -253,6 +272,7 @@ class AiSolver:
             # Then we send that mouse click over to the play screen to be handled with the previous group's code.
             screen.handle_event(new_event)
 
+        '''
         # We check here for a game win or loss (because for some reason it doesn't work in the previous group's loop)
             # The previous group didn't fail us, but somehow our intervention breaks their game loop.
         if screen.remaining_cells == 0:
@@ -271,6 +291,7 @@ class AiSolver:
                 screen.draw()
                 time.sleep(1)
                 screen.end_game()
+        '''
         
         # We then wait a second between each move.
         time.sleep(1)
