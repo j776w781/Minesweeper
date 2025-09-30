@@ -1,8 +1,0 @@
-Task, Timespent
-create_start_screen, .5
-get_user_input, 1
-edit_prologue_comments, .5
-fixed_cell_uncovering, .5
-created_status_indicator, .5
-linked_victory_screen, .25
-force_uncover_mines, .25
