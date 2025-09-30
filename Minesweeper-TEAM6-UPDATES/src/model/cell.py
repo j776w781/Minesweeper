@@ -1,0 +1,76 @@
+"""
+Program name: cell.py
+Description: cell class for minesweeper game
+Inputs: surface, position, size
+Outputs: A cell object with methods to uncover, flag, set mine, increment adjacent mines, draw, and handle events
+External sources:
+Authors: Benjamin Kozlowksi, MJ McGee
+Creation date: 28 August 2025
+"""
+
+#cell will be a class and it will have types of covered, flagged, and uncovered
+import pygame as pg
+
+from ..game import settings
+
+
+class Cell:
+    def __init__(self):
+        self.is_mine = False
+        self.is_covered = True
+        self.is_flagged = False
+        self.adjacent_mines = 0
+        self.rect = pg.Rect(0, 0, 20, 20) #default size, will be set later
+    #uncover will uncover the cell if it is not flagged
+
+    def uncover(self, override: bool=False): #override flag to force uncover mines even if they are flagged
+        if not self.is_flagged or override:
+            self.is_covered = False
+            if settings.SOUND_ON:
+                if not self.is_mine:
+                    settings.CLICK_SOUND.play()
+                else:
+                    settings.BOMB_SOUND.play()
+
+    def toggle_flag(self):
+        if self.is_covered:
+            self.is_flagged = not self.is_flagged
+    #set_mine will set the cell to be a mine
+            if settings.SOUND_ON:
+                settings.FLAG_SOUND.play()
+
+    def set_mine(self):
+        self.is_mine = True
+    #increment_adjacent_mines will increment the number of adjacent mines
+    def increment_adjacent_mines(self):
+        self.adjacent_mines += 1
+    #draw will draw the cell on the screen, depending on the cell's state
+    def draw(self, surface, x, y, size=40):
+        rect = pg.Rect(x, y, size, size)
+        if self.is_covered: #covered cell drawing
+            pg.draw.rect(surface, (162, 209, 73), rect, width=0) #Green Color
+            pg.draw.rect(surface, (0, 0, 0), rect, width=1)
+            self.rect = rect
+            if self.is_flagged:
+                pg.draw.circle(surface, (255, 0, 0), rect.center, 10) #Red Color circle
+        else: #uncovered cell drawing
+            pg.draw.rect(surface, (229, 194, 159), rect, width=0) #Brown Color
+            self.rect = rect
+            if self.is_mine: #draw mine and color red
+                pg.draw.rect(surface, (255, 0, 0), rect, width=0)
+                pg.draw.circle(surface, (0, 0, 0), rect.center, 10) #Black Color circle
+            elif self.adjacent_mines > 0: #draw number of adjacent mines
+                font = pg.font.Font(None, 24)
+                text_surface = font.render(str(self.adjacent_mines), True, (0, 0, 0))
+                text_rect = text_surface.get_rect(center=rect.center)
+                surface.blit(text_surface, text_rect)
+
+    #handle_event will handle mouse events for the cell
+    def handle_event(self, event):
+        rect = self.rect
+        if event.type == pg.MOUSEBUTTONDOWN and rect.collidepoint(event.pos):
+            if event.button == 1 and self.is_covered and not self.is_flagged: #If cell is left clicked AND cell is covered AND cell is not flagged
+                self.uncover()
+                return True
+            elif event.button == 3:
+                self.toggle_flag()
