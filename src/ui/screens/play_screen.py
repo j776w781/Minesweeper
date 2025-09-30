@@ -38,6 +38,7 @@ class PlayScreen:
         self.instructions = pg.font.Font(None,28).render(f"Left Click to Uncover, Right Click to Flag", True, BLACK)
         self.instructions_2 = pg.font.Font(None,28).render(f"Numbers Indicate Adjacent Mines", True, BLACK)
         self.instructions_3 = pg.font.Font(None,28).render(f"Uncover All Cells and Flag All Mines to Win!", True, BLACK)
+        self.start_time = time.time()
     # Draw the play screen, updating the display
     def draw(self):
         #draw the grid, add labels, and make the board ready for user to play
@@ -142,7 +143,9 @@ class PlayScreen:
                 #print("HERE")
                 self.app.transition_to_game_over() #Switch to the game over screen
             else:
-                self.app.transition_to_victory() #Switch to the victory screen
+                end_time = time.time()
+                elapsed_time = end_time - self.start_time
+                self.app.transition_to_victory(elapsed_time) #Switch to the victory screen
 
     # Handle mouse events for uncovering and flagging cells
 

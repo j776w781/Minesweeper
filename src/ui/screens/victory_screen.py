@@ -12,8 +12,9 @@ Creation date: 7 September 2025
 import pygame as pg
 from ..button import Button
 
+
 class VictoryScreen:
-    def __init__(self, screen, app=None): 
+    def __init__(self, screen, app=None, elapsed_time=None): 
         #Initialize the start screen
         #It has app paramater so that it an communicate back to the main GameApp to trigger state changes.
         self.screen = screen
@@ -21,6 +22,7 @@ class VictoryScreen:
         self.font = pg.font.Font(None, 74)
         self.small_font = pg.font.Font(None, 36)
         self.interactibles = list()
+        self.elapsed_time = elapsed_time
 
         self.restart_button = Button(
             x=screen.get_width() // 2 - 100,
@@ -47,6 +49,21 @@ class VictoryScreen:
         title_surface = self.font.render("Victory", True, (255, 255, 255))
         title_rect = title_surface.get_rect(center=(self.screen.get_width() // 2, 100))
         self.screen.blit(title_surface, title_rect)
+
+        #Timer display
+
+        if self.elapsed_time is not None:
+            minutes = int(self.elapsed_time // 60)
+            seconds = int(self.elapsed_time % 60)
+            formatted_time = f"{minutes}:{seconds:02d}"  # pad seconds with 0 if needed
+        else:
+            formatted_time = "0:00"
+        
+
+        timer_surface = self.small_font.render(f"Time: {formatted_time}", True, (255, 255, 255))
+        timer_surface = self.small_font.render("Time: {}".format(formatted_time), True, (255, 255, 255))
+        timer_rect = timer_surface.get_rect(center=(self.screen.get_width() // 2, 200))
+        self.screen.blit(timer_surface, timer_rect)
 
 
         #Draw restart button

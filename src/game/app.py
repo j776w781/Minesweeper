@@ -18,6 +18,7 @@ from ..ui.screens.game_over_screen import GameOverScreen
 from ..ui.screens.victory_screen import VictoryScreen
 from ..input.mouse import InputController
 from ..game.ai_solver import AiSolver
+
      
 class GameApp:
     def __init__(self):
@@ -55,9 +56,9 @@ class GameApp:
         self.state = 'game_over'
         print(f"State changed to {self.state}")
 
-    def transition_to_victory(self): #Called by PlayScreen when the game is won
+    def transition_to_victory(self, elapsed_time): #Called by PlayScreen when the game is won
         self.play_screen = None #Clear the play screen
-        self.victory_screen = VictoryScreen(self.screen, self) #Initialize the victory screen
+        self.victory_screen = VictoryScreen(self.screen, self, elapsed_time) #Initialize the victory screen
         self.state = 'victory'
 
     def transition_to_start(self): #Called by GameOverScreen when restart button is pressed
