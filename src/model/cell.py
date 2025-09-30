@@ -11,6 +11,9 @@ Creation date: 28 August 2025
 #cell will be a class and it will have types of covered, flagged, and uncovered
 import pygame as pg
 
+from ..game import settings
+
+
 class Cell:
     def __init__(self):
         self.is_mine = False
@@ -19,14 +22,23 @@ class Cell:
         self.adjacent_mines = 0
         self.rect = pg.Rect(0, 0, 20, 20) #default size, will be set later
     #uncover will uncover the cell if it is not flagged
+
     def uncover(self, override: bool=False): #override flag to force uncover mines even if they are flagged
         if not self.is_flagged or override:
             self.is_covered = False
-    #toggle_flag will toggle the flag on the cell if it is covered
+            if settings.SOUND_ON:
+                if not self.is_mine:
+                    settings.CLICK_SOUND.play()
+                else:
+                    settings.BOMB_SOUND.play()
+
     def toggle_flag(self):
         if self.is_covered:
             self.is_flagged = not self.is_flagged
     #set_mine will set the cell to be a mine
+            if settings.SOUND_ON:
+                settings.FLAG_SOUND.play()
+
     def set_mine(self):
         self.is_mine = True
     #increment_adjacent_mines will increment the number of adjacent mines
