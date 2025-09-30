@@ -135,8 +135,12 @@ class PlayScreen:
         '''
         Slight tweaks to this function greatly reduce the code needed in the AISolver methods.
         '''
-        self.draw()
-        time.sleep(1)
+
+        '''
+        Re-evaluating the timing makes this addition no longer necessary.
+        '''
+        #self.draw()
+        #time.sleep(1)
         if hasattr(self, 'app') and self.app: #Check to make sure app exists as a good practice
             print("had app")
             if self.loss:
@@ -183,6 +187,7 @@ class PlayScreen:
                     print(f"Cell at index {self.grid.index(cell)} uncovered with {cell.adjacent_mines} adjacent mines. {self.remaining_cells} cells remaining.")
                 #if all mines are flagged and all other cells revealed, game won
                 if self.remaining_cells == 0:
+                    print("Game cleared!")
                     self.play_state = "game_over" #Set the play_state to game_over
                     self.winning_player = self.app.player
                     pg.time.set_timer(self.GAME_OVER_EVENT, 1000, loops=1) #Set a timer to trigger GAME_OVER_EVENT after 1 sec

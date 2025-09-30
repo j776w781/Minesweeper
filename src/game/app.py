@@ -77,7 +77,19 @@ class GameApp:
                 if e.type == pg.QUIT:
                     running = False
                 else:
-                    self.input.handle(e)  # convert to Uncover/ToggleFlag commands
+                    '''
+                    If there's no predicate here, a player can interfere with the AI's moves, even during auto mode. 
+                    However, transitions to the game_over state are rely on a timer set in the PlayScreen class, which 
+                    can only handle it if the handle() event is called.
+
+                    The self.player=='human' predicate allows human input to actually be handled.
+
+                    The first subpredicate of the second half of the expressions allows human input to be handled if the AI has already lost the game.
+
+                    The second subpredicate ensures that the human can select buttons after the game is over and the PlayScreen has been erased.
+                    '''
+                    if self.player == 'human' or (self.player == 'ai' and ((self.play_screen and (self.play_screen.loss or self.play_screen.board_cleared))) or not self.play_screen):
+                        self.input.handle(e)  # convert to Uncover/ToggleFlag commands
                     pass
             #STATE MANAGEMENT
             if self.state == 'start':
@@ -96,7 +108,26 @@ class GameApp:
                     self.ai = AiSolver() # Create the AI
                     self.player = 'ai' # Set the active player to AI
                 if self.player == 'ai': 
+                    #Show the user what the board looks like before the AI makes its move.
+                    self.play_screen.draw()
+                    #Give the user time to see it.
+                    time.sleep(1)
+                    #Let AI make its move.
                     self.ai.AIMove(self.play_screen, self.difficulty) # Make a move when active player is AI
+                    
+                    '''
+                    Deleted, since these steps aren't needed after all. Essentially, the user needs to 
+                    be able to see the state of the board BEFORE the AI makes its move. Once the AI makes
+                    a move, we don't actually need to wait a second before passing control back to the user.
+                    However, when passing control to the AI, we can wait one second.
+
+                    This timing system was put in place so that the timing of the sound effects, particularly for AI
+                    moves, would keep up with the screen changes as closely as possible.
+                    '''
+                    #Show the user the board after AI's move.
+                    #self.play_screen.draw()
+                    #Give the player a second to view it before its their turn.
+                    #time.sleep(1)
                     if self.interact: # If we are in Interactive mode...
                         #print("ITS ME!")
                         self.state = 'play' # ...set the state back to 'play'...
