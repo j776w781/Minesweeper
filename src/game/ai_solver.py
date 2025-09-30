@@ -33,7 +33,8 @@ class AiSolver:
             self.legalMoves.append(i)
 
         # Now draw the screen.
-        screen.draw()
+        # This function should only be responsible for making a single move, not UI displays.
+        #screen.draw()
 
 
         '''
@@ -97,14 +98,16 @@ class AiSolver:
         '''
         
         # We then wait a second between each move.
-        time.sleep(1)
+        # This function shouldn't be concerned with timing. Let App handle that.
+        #time.sleep(1)
 
     def mediumMode(self, screen):
         self.legalMoves = []
         for i in range(0, 100):
             self.legalMoves.append(i)
 
-        screen.draw()
+        # This function should only be responsible for making a single move, not UI displays.
+        #screen.draw()
 
 
         '''
@@ -221,7 +224,11 @@ class AiSolver:
         '''
         
         # We then wait a second between each move.
-        time.sleep(1)
+        # This function shouldn't be concerned with timing. Let App handle that.
+        #time.sleep(1)
+
+
+
 
     def hardMode(self, screen):
         # We want to define all legal moves that the AI could make.
@@ -230,7 +237,8 @@ class AiSolver:
             self.legalMoves.append(i)
 
         # Now draw the screen.
-        screen.draw()
+        # This function should only be responsible for making a single move, not UI displays.
+        #screen.draw()
 
 
         '''
@@ -294,5 +302,6 @@ class AiSolver:
         '''
         
         # We then wait a second between each move.
-        time.sleep(1)
+        # This function shouldn't be concerned with timing. Let App handle that.
+        #time.sleep(1)
 
