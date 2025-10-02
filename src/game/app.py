@@ -24,14 +24,14 @@ class GameApp:
     def __init__(self):
         pg.display.set_caption("Minesweeper", icontitle="Minesweeper") #Set the window caption to say "Minesweeper"
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
-        pg.init()
+        pg.init() # Initialize pygame module
         self.clock = pg.time.Clock()
         self.input = InputController()
         self.state = 'start'
-        self.ai = None
+        self.ai = None # Placeholder for AI
         self.player = 'human'
         self.interact = False
-        self.difficulty = None
+        self.difficulty = None # Difficulty setting for AI
         self.play_screen = None #Will be initialized when transitioning to play state
 
     def transition_to_play(self, num_mines): #Called by StartScreen when play button is pressed
@@ -44,11 +44,11 @@ class GameApp:
         '''
         self.player = 'human'
 
-    def transition_to_ai_play(self, num_mines, difficulty):
+    def transition_to_ai_play(self, num_mines, difficulty): # Transitions to AI controlled play mode
         self.start_screen = None
         self.play_screen = PlayScreen(self.screen, num_mines, self)
-        self.difficulty = difficulty
-        self.state = 'ai play'
+        self.difficulty = difficulty # Stores AI difficulty
+        self.state = 'ai play' # Swtiches to AI play state
 
     def transition_to_game_over(self): #Called by PlayScreen when the game is Over
         self.play_screen = None #Clear the play screen
@@ -74,7 +74,7 @@ class GameApp:
         while running:
             #print(self.state)
             for e in pg.event.get():
-                if e.type == pg.QUIT:
+                if e.type == pg.QUIT: # If user quits
                     running = False
                 else:
                     '''
@@ -152,4 +152,4 @@ class GameApp:
 
             pg.display.flip()
             self.clock.tick(FPS)
-        pg.quit()
+        pg.quit() # Quits pygame after loop ends
