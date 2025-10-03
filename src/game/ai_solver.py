@@ -1,3 +1,13 @@
+'''
+File: ai_solver.py
+Description: Implementation of the AI solver for Minesweeper.
+Inputs: GameApp calls AIMove(), passing in the active screen and the specified difficulty.
+Outputs: AIMove() passes the screen on to the appropriate difficulty function, which performs a single move on the board stored by the active screen.
+External sources: None
+Authors: Bisshoy Bhattacharjee, Josh Welicky, Max Biundo, Marcus Kitchin, Gavin Billinger
+Last updated: 10/3/2025
+'''
+
 import pygame as pg
 import time
 import random
@@ -11,8 +21,6 @@ from ..model.cell import Cell
 
 class AiSolver:
     def __init__(self):
-        #This attribute is no longer necessary.
-        self.firstMove = True
         # Stores all the legal moves AI can make
         self.legalMoves = []
 
