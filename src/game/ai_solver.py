@@ -1,3 +1,13 @@
+'''
+File: ai_solver.py
+Description: Implementation of the AI solver for Minesweeper.
+Inputs: GameApp calls AIMove(), passing in the active screen and the specified difficulty.
+Outputs: AIMove() passes the screen on to the appropriate difficulty function, which performs a single move on the board stored by the active screen.
+External sources: None
+Authors: Bisshoy Bhattacharjee, Josh Welicky, Max Biundo, Marcus Kitchin, Gavin Billinger
+Last updated: 10/3/2025
+'''
+
 import pygame as pg
 import time
 import random
@@ -11,8 +21,6 @@ from ..model.cell import Cell
 
 class AiSolver:
     def __init__(self):
-        #This attribute is no longer necessary.
-        self.firstMove = True
         # Stores all the legal moves AI can make
         self.legalMoves = []
 
@@ -32,22 +40,6 @@ class AiSolver:
         self.legalMoves = []
         for i in range(0, 100):
             self.legalMoves.append(i)
-
-        # Now draw the screen.
-        # This function should only be responsible for making a single move, not UI displays.
-        #screen.draw()
-
-
-        '''
-        PlayScreen's handler already accounts for the first click, so this code should be unnecessary.
-
-        # If this is the first move, we need to make a default move because no mines have been set.
-        if self.firstMove:
-            new_event = pg.event.Event(pg.MOUSEBUTTONDOWN, {'button': 1, 'pos': (75, 110)})
-            screen.handle_event(new_event)
-            self.firstMove = False
-            return
-        '''
 
          # When we make any generic move, we read the board and remove all illegal moves.
             # These include cells that are uncovered only (because it's easy mode).
@@ -74,51 +66,10 @@ class AiSolver:
             # Then we send that mouse click over to the play screen to be handled with the previous group's code.
             screen.handle_event(new_event)
 
-        '''
-        The PlayScreen handler does win/loss checking already. I applied a minor tweak to the PlayScreen's end_game() method 
-        so that this printing wouldn't be necessary.
-
-        # We check here for a game win or loss (because for some reason it doesn't work in the previous group's loop)
-            # The previous group didn't fail us, but somehow our intervention breaks their game loop.
-        if screen.remaining_cells == 0:
-            screen.play_state = 'game_over'
-
-        if screen.play_state == 'game_over':
-            if screen.loss == True:
-                for cell in screen.grid:
-                    #if the cell is a mine reveal to show user all mines
-                    if cell.is_mine:
-                        cell.uncover(override=True)
-                screen.draw()
-                time.sleep(1)
-                screen.end_game()
-            else:
-                screen.draw()
-                time.sleep(1)
-                screen.end_game()
-        '''
-        
-        # We then wait a second between each move.
-        # This function shouldn't be concerned with timing. Let App handle that.
-        #time.sleep(1)
-
     def mediumMode(self, screen): # Initializes all legal moves
         self.legalMoves = []
         for i in range(0, 100):
             self.legalMoves.append(i)
-
-        # This function should only be responsible for making a single move, not UI displays.
-        #screen.draw()
-
-
-        '''
-        # If this is the first move, we need to make a default move because no mines have been set.
-        if self.firstMove:
-            new_event = pg.event.Event(pg.MOUSEBUTTONDOWN, {'button': 1, 'pos': (75, 110)})
-            screen.handle_event(new_event)
-            self.firstMove = False
-            return
-        '''
 
         # We will iterate through the entire board looking for obvious bomb locations.
         bomb_spaces = [] # List of cells to have bombs
@@ -203,53 +154,11 @@ class AiSolver:
             # Then we send that mouse click over to the play screen to be handled with the previous group's code.
             screen.handle_event(new_event)
 
-        '''
-        # We check here for a game win or loss (because for some reason it doesn't work in the previous group's loop)
-            # The previous group didn't fail us, but somehow our intervention breaks their game loop.
-        if screen.remaining_cells == 0:
-            screen.play_state = 'game_over'
-
-        if screen.play_state == 'game_over':
-            if screen.loss == True:
-                for cell in screen.grid:
-                    #if the cell is a mine reveal to show user all mines
-                    if cell.is_mine:
-                        cell.uncover(override=True)
-                screen.draw()
-                time.sleep(1)
-                screen.end_game()
-            else:
-                screen.draw()
-                time.sleep(1)
-                screen.end_game()
-        '''
-        
-        # We then wait a second between each move.
-        # This function shouldn't be concerned with timing. Let App handle that.
-        #time.sleep(1)
-
-
-
-
     def hardMode(self, screen):
         # We want to define all legal moves that the AI could make.
         self.legalMoves = []
         for i in range(0, 100):
             self.legalMoves.append(i)
-
-        # Now draw the screen.
-        # This function should only be responsible for making a single move, not UI displays.
-        #screen.draw()
-
-
-        '''
-        # If this is the first move, we need to make a default move because no mines have been set.
-        if self.firstMove:
-            new_event = pg.event.Event(pg.MOUSEBUTTONDOWN, {'button': 1, 'pos': (75, 110)})
-            screen.handle_event(new_event)
-            self.firstMove = False
-            return
-        '''
 
         # When we make any generic move, we read the board and remove all illegal moves.
             # These include cells that are uncovered, and cells with bombs (for hard mode).
@@ -280,29 +189,3 @@ class AiSolver:
             new_event = pg.event.Event(pg.MOUSEBUTTONDOWN, {'button': 1, 'pos': (75 + (40*x), 110 + (40*y))})
             # Then we send that mouse click over to the play screen to be handled with the previous group's code.
             screen.handle_event(new_event)
-
-        '''
-        # We check here for a game win or loss (because for some reason it doesn't work in the previous group's loop)
-            # The previous group didn't fail us, but somehow our intervention breaks their game loop.
-        if screen.remaining_cells == 0:
-            screen.play_state = 'game_over'
-
-        if screen.play_state == 'game_over':
-            if screen.loss == True:
-                for cell in screen.grid:
-                    #if the cell is a mine reveal to show user all mines
-                    if cell.is_mine:
-                        cell.uncover(override=True)
-                screen.draw()
-                time.sleep(1)
-                screen.end_game()
-            else:
-                screen.draw()
-                time.sleep(1)
-                screen.end_game()
-        '''
-        
-        # We then wait a second between each move.
-        # This function shouldn't be concerned with timing. Let App handle that.
-        #time.sleep(1)
-
