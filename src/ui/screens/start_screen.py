@@ -46,6 +46,16 @@ class StartScreen:
         )
         self.interactibles.append(self.auto_button)
 
+        self.leaderboard_button = Button(
+            x=screen.get_width() // 2 - 250,
+            y=screen.get_height() // 2 - 280,
+            width=130,
+            height=50,
+            text="Leaderboard",
+            action=self.view_leaderboard
+        )
+        self.interactibles.append(self.leaderboard_button)
+
         #Interactive mode button
         self.inter_button = Button(
             x=screen.get_width() // 2 + 30,
@@ -79,7 +89,7 @@ class StartScreen:
         )
         self.interactibles.append(self.decrement_button)
 
-        # Easy button position
+
         self.easy_button = Button(
             x=screen.get_width() // 2 - 80,
             y=screen.get_height() // 2 + 100,
@@ -89,7 +99,7 @@ class StartScreen:
             action=self.enable_easy_ai
         )
         self.interactibles.append(self.easy_button)
-        # Medium button position
+
         self.med_button = Button(
             x=screen.get_width() // 2 +30,
             y=screen.get_height() // 2 + 100,
@@ -99,7 +109,7 @@ class StartScreen:
             action=self.enable_medium_ai
         )
         self.interactibles.append(self.med_button)
-        # Hard button position
+
         self.hard_button = Button(
             x=screen.get_width() // 2 +140,
             y=screen.get_height() // 2 + 100,
@@ -128,22 +138,26 @@ class StartScreen:
         if hasattr(self, 'app') and self.app: #Check to make sure app exists as a good practice
             self.app.transition_to_play(self.num_mines) #Call the transition_to_play method in GameApp with the selected number of mines
 
-    # Switch to easy AI mode
+    def view_leaderboard(self):
+        if hasattr(self, 'app') and self.app: #Check to make sure app exists as a good practice
+            self.app.transition_to_leaderboard() #Call the transition_to_play method in GameApp with the selected number of mines
+
+    #Go into AI mode...whatever that means...
     def enable_easy_ai(self):
         if hasattr(self, 'app') and self.app:
             self.app.transition_to_ai_play(self.num_mines, 'easy')
-    # Switch to medium AI mode
+
     def enable_medium_ai(self):
         if hasattr(self, 'app') and self.app:
             self.app.transition_to_ai_play(self.num_mines, 'medium')
-    # Switch to hard AI mode
+
     def enable_hard_ai(self):
         if hasattr(self, 'app') and self.app:
             self.app.transition_to_ai_play(self.num_mines, 'hard')
-    # Toggle interactive AI mode
+
     def toggle_interact(self):
         self.app.interact = True
-    # Toggle auto AI mode
+    
     def toggle_auto(self):
         self.app.interact = False
 
@@ -173,6 +187,9 @@ class StartScreen:
 
         #Draw increment button
         self.increment_button.draw(self.screen)
+
+        #Draw increment button
+        self.leaderboard_button.draw(self.screen)
 
         #Draw decrement button
         self.decrement_button.draw(self.screen)

@@ -11,28 +11,30 @@ Creation date: 28 August 2025
 
 import pygame as pg
 import time
+import os
 from .settings import WIDTH, HEIGHT, FPS
 from ..ui.screens.start_screen import StartScreen
 from ..ui.screens.play_screen import PlayScreen
 from ..ui.screens.game_over_screen import GameOverScreen
 from ..ui.screens.victory_screen import VictoryScreen
+from ..ui.screens.leader_board_screen import LeaderBoardScreen
 from ..input.mouse import InputController
 from ..game.ai_solver import AiSolver
-
-     
+from ..game.save_state import Leaderboard
 class GameApp:
     def __init__(self):
         pg.display.set_caption("Minesweeper", icontitle="Minesweeper") #Set the window caption to say "Minesweeper"
         self.screen = pg.display.set_mode((WIDTH, HEIGHT))
-        pg.init() # Initialize pygame module
+        pg.init()
         self.clock = pg.time.Clock()
         self.input = InputController()
         self.state = 'start'
-        self.ai = None # Placeholder for AI
+        self.ai = None
         self.player = 'human'
         self.interact = False
-        self.difficulty = None # Difficulty setting for AI
+        self.difficulty = None
         self.play_screen = None #Will be initialized when transitioning to play state
+        self.leaderboard = Leaderboard()
 
     def transition_to_play(self, num_mines): #Called by StartScreen when play button is pressed
         self.start_screen = None #Clear the start screen
@@ -44,11 +46,11 @@ class GameApp:
         '''
         self.player = 'human'
 
-    def transition_to_ai_play(self, num_mines, difficulty): # Transitions to AI controlled play mode
+    def transition_to_ai_play(self, num_mines, difficulty):
         self.start_screen = None
         self.play_screen = PlayScreen(self.screen, num_mines, self)
-        self.difficulty = difficulty # Stores AI difficulty
-        self.state = 'ai play' # Swtiches to AI play state
+        self.difficulty = difficulty
+        self.state = 'ai play'
 
     def transition_to_game_over(self): #Called by PlayScreen when the game is Over
         self.play_screen = None #Clear the play screen
@@ -58,6 +60,8 @@ class GameApp:
 
     def transition_to_victory(self, elapsed_time): #Called by PlayScreen when the game is won
         self.play_screen = None #Clear the play screen
+        self.leaderboard.read()
+        self.leaderboard.update(round(elapsed_time))
         self.victory_screen = VictoryScreen(self.screen, self, elapsed_time) #Initialize the victory screen
         self.state = 'victory'
 
@@ -66,30 +70,30 @@ class GameApp:
         self.start_screen = StartScreen(self.screen, self) #Re-initialize the start screen
         self.state = 'start'
 
+    def transition_to_leaderboard(self):
+        self.start_screen = None
+        self.leaderboard.read() 
+        self.leaderboard_screen = LeaderBoardScreen(
+            self.screen, 
+            app=self, # Pass app for the back button to work
+            leaderboard=self.leaderboard.data
+        ) 
+        self.state = 'leaderboard'
+
     def run(self):
         #Main game loop, manages state transitions and screen updates
         running = True
+        self.leaderboard.read()
         start_screen = StartScreen(self.screen, self) #We only want to initialize the start screen once, or else it will keep overwriting itself - MJ
                                                     #Pass self to allow StartScreen to call back to GameApp, that becomes the app parameter in StartScreen
+        
         while running:
             #print(self.state)
             for e in pg.event.get():
-                if e.type == pg.QUIT: # If user quits
+                if e.type == pg.QUIT:
                     running = False
                 else:
-                    '''
-                    If there's no predicate here, a player can interfere with the AI's moves, even during auto mode. 
-                    However, transitions to the game_over state are rely on a timer set in the PlayScreen class, which 
-                    can only handle it if the handle() event is called.
-
-                    The self.player=='human' predicate allows human input to actually be handled.
-
-                    The first subpredicate of the second half of the expressions allows human input to be handled if the AI has already lost the game.
-
-                    The second subpredicate ensures that the human can select buttons after the game is over and the PlayScreen has been erased.
-                    '''
-                    if self.player == 'human' or (self.player == 'ai' and ((self.play_screen and (self.play_screen.loss or self.play_screen.board_cleared))) or not self.play_screen):
-                        self.input.handle(e)  # convert to Uncover/ToggleFlag commands
+                    self.input.handle(e)  # convert to Uncover/ToggleFlag commands
                     pass
             #STATE MANAGEMENT
             if self.state == 'start':
@@ -108,26 +112,7 @@ class GameApp:
                     self.ai = AiSolver() # Create the AI
                     self.player = 'ai' # Set the active player to AI
                 if self.player == 'ai': 
-                    #Show the user what the board looks like before the AI makes its move.
-                    self.play_screen.draw()
-                    #Give the user time to see it.
-                    time.sleep(1)
-                    #Let AI make its move.
                     self.ai.AIMove(self.play_screen, self.difficulty) # Make a move when active player is AI
-                    
-                    '''
-                    Deleted, since these steps aren't needed after all. Essentially, the user needs to 
-                    be able to see the state of the board BEFORE the AI makes its move. Once the AI makes
-                    a move, we don't actually need to wait a second before passing control back to the user.
-                    However, when passing control to the AI, we can wait one second.
-
-                    This timing system was put in place so that the timing of the sound effects, particularly for AI
-                    moves, would keep up with the screen changes as closely as possible.
-                    '''
-                    #Show the user the board after AI's move.
-                    #self.play_screen.draw()
-                    #Give the player a second to view it before its their turn.
-                    #time.sleep(1)
                     if self.interact: # If we are in Interactive mode...
                         #print("ITS ME!")
                         self.state = 'play' # ...set the state back to 'play'...
@@ -147,9 +132,33 @@ class GameApp:
                 self.victory_screen.draw() #Draw the victory screen
                 self.ai = None
                 self.input.update_screen(self.victory_screen) #Make sure the input controller knows which screen is active
+            elif self.state == 'leaderboard' and self.leaderboard_screen: #Manage Game Over state
+                self.leaderboard_screen.draw() #Draw the victory screen
+                self.ai = None
+                self.input.update_screen(self.leaderboard_screen) #Make sure the input controller knows which screen is active
 
             #END STATE MANAGEMENT
 
             pg.display.flip()
             self.clock.tick(FPS)
-        pg.quit() # Quits pygame after loop ends
+        pg.quit()
+
+    def read_data_from_file(self, filepath):
+        data_list = []
+        try:
+            with open(filepath, 'r') as file: # Open the file in read mode ('r')
+                lines = file.readlines()# Read all lines from the file
+                # Process each line: strip whitespace (especially the newline '\n')
+                for line in lines:
+                    clean_line = line.strip()
+                    if clean_line: # Only add non-empty lines
+                        data_list.append(clean_line)
+            return data_list
+            
+        except FileNotFoundError:
+            print(f"Error: The file at path '{filepath}' was not found.")
+            return []
+        except Exception as e:
+            print(f"An unexpected error occurred while reading the file: {e}")
+            return []
+        

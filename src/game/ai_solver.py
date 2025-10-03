@@ -13,19 +13,18 @@ class AiSolver:
     def __init__(self):
         #This attribute is no longer necessary.
         self.firstMove = True
-        # Stores all the legal moves AI can make
         self.legalMoves = []
 
 
-    def AIMove(self, screen, difficulty): # Decide which AI difficulty mode to use
+    def AIMove(self, screen, difficulty):
         if difficulty == 'easy':
-            self.easyMode(screen) # Use easy mode AI
+            self.easyMode(screen)
         elif difficulty == 'medium':
-            self.mediumMode(screen) # Use medium mode AI
+            self.mediumMode(screen)
         elif difficulty == 'hard':
-            self.hardMode(screen) # Use hard mode AI
+            self.hardMode(screen)
         else:
-            pass # Use no input given
+            pass
 
     def easyMode(self, screen):
         # We define all legal moves     
@@ -34,8 +33,7 @@ class AiSolver:
             self.legalMoves.append(i)
 
         # Now draw the screen.
-        # This function should only be responsible for making a single move, not UI displays.
-        #screen.draw()
+        screen.draw()
 
 
         '''
@@ -99,16 +97,14 @@ class AiSolver:
         '''
         
         # We then wait a second between each move.
-        # This function shouldn't be concerned with timing. Let App handle that.
-        #time.sleep(1)
+        time.sleep(1)
 
-    def mediumMode(self, screen): # Initializes all legal moves
+    def mediumMode(self, screen):
         self.legalMoves = []
         for i in range(0, 100):
             self.legalMoves.append(i)
 
-        # This function should only be responsible for making a single move, not UI displays.
-        #screen.draw()
+        screen.draw()
 
 
         '''
@@ -121,7 +117,7 @@ class AiSolver:
         '''
 
         # We will iterate through the entire board looking for obvious bomb locations.
-        bomb_spaces = [] # List of cells to have bombs
+        bomb_spaces = []
         for cell in screen.grid:
             neighbors = []
             if not cell.is_covered:
@@ -131,13 +127,13 @@ class AiSolver:
                 for index in initial_adjacents:
                     if index in range(0, 100):
                         surroundings.append(index)
-                for neighbor in surroundings: # Collect covered neighbours
+                for neighbor in surroundings:
                     if screen.grid[neighbor].is_covered:
                         neighbors.append(neighbor)
                 if len(neighbors) == cell.adjacent_mines:
                     for neighbor in neighbors:
                         if neighbor not in bomb_spaces:
-                            bomb_spaces.append(neighbor) # Adds it to the bomb list so the AI can avoid clicking it
+                            bomb_spaces.append(neighbor)
         
         # Now we will iterate through the entire board again looking for moves the AI can prioritize.
         priority_moves = []
@@ -225,11 +221,7 @@ class AiSolver:
         '''
         
         # We then wait a second between each move.
-        # This function shouldn't be concerned with timing. Let App handle that.
-        #time.sleep(1)
-
-
-
+        time.sleep(1)
 
     def hardMode(self, screen):
         # We want to define all legal moves that the AI could make.
@@ -238,8 +230,7 @@ class AiSolver:
             self.legalMoves.append(i)
 
         # Now draw the screen.
-        # This function should only be responsible for making a single move, not UI displays.
-        #screen.draw()
+        screen.draw()
 
 
         '''
@@ -303,6 +294,5 @@ class AiSolver:
         '''
         
         # We then wait a second between each move.
-        # This function shouldn't be concerned with timing. Let App handle that.
-        #time.sleep(1)
+        time.sleep(1)
 
