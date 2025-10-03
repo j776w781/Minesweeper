@@ -13,18 +13,19 @@ class AiSolver:
     def __init__(self):
         #This attribute is no longer necessary.
         self.firstMove = True
+        # Stores all the legal moves AI can make
         self.legalMoves = []
 
 
-    def AIMove(self, screen, difficulty):
+    def AIMove(self, screen, difficulty): # Decide which AI difficulty mode to use
         if difficulty == 'easy':
-            self.easyMode(screen)
+            self.easyMode(screen) # Use easy mode AI
         elif difficulty == 'medium':
-            self.mediumMode(screen)
+            self.mediumMode(screen) # Use medium mode AI
         elif difficulty == 'hard':
-            self.hardMode(screen)
+            self.hardMode(screen) # Use hard mode AI
         else:
-            pass
+            pass # Use no input given
 
     def easyMode(self, screen):
         # We define all legal moves     
@@ -101,7 +102,7 @@ class AiSolver:
         # This function shouldn't be concerned with timing. Let App handle that.
         #time.sleep(1)
 
-    def mediumMode(self, screen):
+    def mediumMode(self, screen): # Initializes all legal moves
         self.legalMoves = []
         for i in range(0, 100):
             self.legalMoves.append(i)
@@ -120,7 +121,7 @@ class AiSolver:
         '''
 
         # We will iterate through the entire board looking for obvious bomb locations.
-        bomb_spaces = []
+        bomb_spaces = [] # List of cells to have bombs
         for cell in screen.grid:
             neighbors = []
             if not cell.is_covered:
@@ -130,13 +131,13 @@ class AiSolver:
                 for index in initial_adjacents:
                     if index in range(0, 100):
                         surroundings.append(index)
-                for neighbor in surroundings:
+                for neighbor in surroundings: # Collect covered neighbours
                     if screen.grid[neighbor].is_covered:
                         neighbors.append(neighbor)
                 if len(neighbors) == cell.adjacent_mines:
                     for neighbor in neighbors:
                         if neighbor not in bomb_spaces:
-                            bomb_spaces.append(neighbor)
+                            bomb_spaces.append(neighbor) # Adds it to the bomb list so the AI can avoid clicking it
         
         # Now we will iterate through the entire board again looking for moves the AI can prioritize.
         priority_moves = []
